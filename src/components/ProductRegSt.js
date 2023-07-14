@@ -1,0 +1,54 @@
+import styled from 'styled-components';
+
+export const ImgBox = styled.div`
+    width: 40%;
+    border-radius: 25px;
+    overflow: hidden;
+    border: 2px solid #333;
+`;
+
+export const ProductThumbnail = styled.div`
+    border-bottom: 2px solid #333;
+    height: 460px;
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+`;
+export const ProductImgs = styled.div`
+    display: flex;
+    align-items: center;
+    img {
+        width: 25%;
+        height: 126px;
+        object-fit: cover;
+        object-position: center;
+        border-right: 2px solid #333;
+        &:nth-child(4) {
+            border-right: none;
+        }
+    }
+`;
+
+export const ProductForm = styled.form`
+    width: 100%;
+    padding: 50px;
+    background-color: antiquewhite;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 50px;
+    .core {
+        width: calc(60% - 50px);
+        height: 590px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .sub {
+        width: 100%;
+        height: 600px;
+    }
+`;
