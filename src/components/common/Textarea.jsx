@@ -9,19 +9,27 @@ const TextareaBox = styled.div`
 const TextareaSt = styled.textarea`
     width: 100%;
     min-height: ${(props) => props.$heigth || `80px`};
-    padding: 12px;
+    padding: ${(props) => props.$padding || `12px`};
     border: 2px solid #333;
-    box-shadow: 0 3px 0 #333;
+    box-shadow: 0 5px 0 #333;
     border-radius: 10px;
-    transform: translateY(-3px);
+    transform: translateY(-5px);
     transition: all 0.2s ease-in-out;
+    font-size: 1.1rem;
     &::-webkit-scrollbar {
         display: none;
     }
     ${({ $label }) => {
         if ($label) {
             return css`
-                margin-top: 8px;
+                margin-top: 12px;
+            `;
+        }
+    }}
+    ${({ $center }) => {
+        if ($center) {
+            return css`
+                text-align: center;
             `;
         }
     }}
@@ -36,17 +44,11 @@ const TextareaSt = styled.textarea`
     }
 `;
 
-const Textarea = ({ label, value, type, onChangeHandler, $heigth }) => {
+const Textarea = ({ label, ...restProps }) => {
     return (
         <TextareaBox>
             <label htmlFor="">{label}</label>
-            <TextareaSt
-                value={value}
-                type={type}
-                onChange={onChangeHandler}
-                $heigth={$heigth}
-                $label={label}
-            ></TextareaSt>
+            <TextareaSt {...restProps} $label={label}></TextareaSt>
         </TextareaBox>
     );
 };

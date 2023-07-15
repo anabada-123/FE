@@ -50,6 +50,11 @@ const PageNum = styled.div`
             box-shadow: 0 0px 0 #333;
             transform: translateY(0px);
         }
+        &.active {
+            background-color: pink;
+            box-shadow: 0 0px 0 #333;
+            transform: translateY(0px);
+        }
     }
 `;
 //[ ]메인 페이지 기능하고 스타일 분리
@@ -72,7 +77,11 @@ const MainpageContainer = () => {
 
         for (let i = startPage; i <= endPage; i++) {
             buttons.push(
-                <button key={i} onClick={() => handleClick(i)}>
+                <button
+                    key={i}
+                    onClick={() => handleClick(i)}
+                    className={currentPage === i ? 'active' : ''}
+                >
                     {i}
                 </button>
             );
@@ -83,7 +92,7 @@ const MainpageContainer = () => {
 
     return (
         <>
-            <ProductList data={data} />
+            <ProductList data={data && data} />
             <PageNum>
                 <button onClick={() => handleClick(currentPage - 1)}>
                     <AiFillCaretLeft />

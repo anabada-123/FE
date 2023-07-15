@@ -1,92 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import ProductItem from './ProductItem';
 const ProductListSt = styled.ul`
     padding: 20px 0 50px;
-    /* background-color: beige; */
+    margin: 0 auto;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     flex-wrap: wrap;
-    gap: 50px 0;
+    gap: 50px 20px;
 `;
 
 export const ProductList = ({ data }) => {
-    const productlistmock = [
-        {
-            id: 1,
-            title: 'title',
-            seller: 'seller',
-            date: '2023.07.14',
-            imgsrc: '../assets/img/img0.jpg',
-            imgalt: 'img',
-        },
-        {
-            id: 1,
-            title: 'title',
-            seller: 'seller',
-            date: '2023.07.14',
-        },
-        {
-            id: 1,
-            title: 'title',
-            seller: 'seller',
-            date: '2023.07.14',
-        },
-        {
-            id: 1,
-            title: 'title',
-            seller: 'seller',
-            date: '2023.07.14',
-        },
-        {
-            id: 1,
-            title: 'title',
-            seller: 'seller',
-            date: '2023.07.14',
-        },
-        {
-            id: 1,
-            title: 'title',
-            seller: 'seller',
-            date: '2023.07.14',
-        },
-        {
-            id: 1,
-            title: 'title',
-            seller: 'seller',
-            date: '2023.07.14',
-        },
-        {
-            id: 1,
-            title: 'title',
-            seller: 'seller',
-            date: '2023.07.14',
-        },
-        {
-            id: 1,
-            title: 'title',
-            seller: 'seller',
-            date: '2023.07.14',
-        },
-        {
-            id: 1,
-            title: 'title',
-            seller: 'seller',
-            date: '2023.07.14',
-        },
-    ];
-
     return (
         <ProductListSt>
-            {productlistmock &&
-                productlistmock.map((item) => {
+            {data &&
+                data.map((item) => {
                     return (
                         <ProductItem
                             id={item.id}
-                            title={item.title}
-                            seller={item.seller}
-                            date={item.date}
-                            srcImg={item.imgsrc}
+                            title={item.itemName}
+                            seller={'mock'}
+                            date={item.day}
+                            srcImg={item.img}
                             altImg={item.imgalt}
                         />
                     );

@@ -16,10 +16,10 @@ const SectionTitle = styled.h2`
 
 const Home = () => {
     return (
-        <>
+        <div className="center" style={{ padding: `50px 0` }}>
             <h2 className="section-title">새로 나온 아나바다</h2>
             <MainpageContainer />
-        </>
+        </div>
     );
 };
 

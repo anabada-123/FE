@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Button from '../components/common/Button';
+import { MONO_COLOR } from '../assets/colors';
+import { useNavigate } from 'react-router-dom';
 
 const ImgBox = styled.div`
     width: 40%;
@@ -39,8 +41,8 @@ const ProductImgs = styled.div`
 
 const ProductInfo = styled.div`
     width: 100%;
-    padding: 50px;
-    background-color: antiquewhite;
+    padding: 80px 50px 30px;
+    background-color: ${MONO_COLOR[2]};
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -66,9 +68,11 @@ const ProductInfo = styled.div`
                 font-size: 1rem;
                 font-weight: bold;
                 position: absolute;
-                right: 20px;
+                top: 0px;
+
+                right: 0px;
                 bottom: 50%;
-                transform: translateY(50%);
+                transform: translateY(-60%);
                 color: #1b92d6;
             }
         }
@@ -98,7 +102,7 @@ const ProductInfo = styled.div`
     }
     .sub {
         width: 100%;
-        padding-bottom: 120px;
+        padding-bottom: 60px;
         p {
             font-size: 1.3rem;
             margin-bottom: 8px;
@@ -112,57 +116,72 @@ const ProductInfo = styled.div`
             border: 2px solid #333;
             border-bottom: 5px solid #333;
             text-align: center;
+            word-break: break-word;
         }
     }
 `;
 
 // MEMO : 서버주소/static/img/${변수}
 const ProductDetail = ({ data }) => {
+    const nav = useNavigate();
     return (
-        <ProductInfo name="product_reg_form" encType="multipart/form-data">
-            <ImgBox>
-                <ProductThumbnail>
-                    <img src={'/img/img0.jpg'} alt={'img'} />
-                </ProductThumbnail>
-                <ProductImgs>
-                    {data.multipleImage ? (
-                        data.multipleImage.map((img, idx) => {
-                            return <img key={idx} src={img} alt="img" />;
-                        })
-                    ) : (
-                        <img src="/img/img0.jpg" alt="img" />
-                    )}
-                </ProductImgs>
-            </ImgBox>
-            <div className="core">
-                <h3>
-                    제목 <span className="seller">너가 먹던 간식</span>
-                </h3>
-                <ul>
-                    <li>
-                        <p className="">상품 한 줄 설명</p>
-                        <pre>{data.itemOneContent}</pre>
-                    </li>
-                    <li>
-                        <p className="">이런 물품과 교환하고 싶어요</p>
-                        <pre>{data.tradingItem}</pre>
-                    </li>
-                    <li>
-                        <p className="">여기서 교환하고 싶어요 </p>
-                        <pre>{data.tradingPosition}</pre>
-                    </li>
-                </ul>
-                <div className="btn-box">
-                    <Button.Primary $width={'240px'} $center={'center'}>
-                        채팅하기
-                    </Button.Primary>
-                </div>
-            </div>
-            <div className="sub">
-                <p className="">상세 내용</p>
-                <pre>{data.itemContent}</pre>
-            </div>
-        </ProductInfo>
+        <>
+            {data && (
+                <>
+                    <ProductInfo name="product_reg_form" encType="multipart/form-data">
+                        <ImgBox>
+                            <ProductThumbnail>
+                                <img src={data.img} alt={'img'} />
+                            </ProductThumbnail>
+                            <ProductImgs>
+                                {data.imgList ? (
+                                    data.imgList.map((img, idx) => {
+                                        return <img key={idx} src={img} alt="img" />;
+                                    })
+                                ) : (
+                                    <img src="/img/img0.jpg" alt="img" />
+                                )}
+                            </ProductImgs>
+                        </ImgBox>
+                        <div className="core">
+                            <h3>
+                                {data.itemName} <span className="seller">너가 먹던 간식</span>
+                            </h3>
+                            <ul>
+                                <li>
+                                    <p className="">상품 한 줄 설명</p>
+                                    <pre>{data.itemOneContent}</pre>
+                                </li>
+                                <li>
+                                    <p className="">이런 물품과 교환하고 싶어요</p>
+                                    <pre>{data.tradingItem}</pre>
+                                </li>
+                                <li>
+                                    <p className="">여기서 교환하고 싶어요 </p>
+                                    <pre>{data.tradingPosition}</pre>
+                                </li>
+                            </ul>
+                            <div className="btn-box">
+                                <Button.Primary $width={'240px'} $center={'center'}>
+                                    채팅하기
+                                </Button.Primary>
+                                <Button.Secondary
+                                    $width={'240px'}
+                                    $center={'center'}
+                                    onClick={() => nav(`/productdetail/${data.id}/update`)}
+                                >
+                                    수정하기
+                                </Button.Secondary>
+                            </div>
+                        </div>
+                        <div className="sub">
+                            <p className="">상세 내용</p>
+                            <pre>{data.itemContent}</pre>
+                        </div>
+                    </ProductInfo>
+                </>
+            )}
+        </>
     );
 };
 

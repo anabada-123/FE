@@ -7,11 +7,7 @@ const MainSt = styled.main`
 `;
 
 const Main = ({ children }) => {
-    return (
-        <MainSt>
-            <div className="center">{children}</div>
-        </MainSt>
-    );
+    return <MainSt>{children}</MainSt>;
 };
 
 export default Main;

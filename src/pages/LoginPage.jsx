@@ -1,7 +1,10 @@
 import React from 'react';
+import styled from 'styled-components';
+
+const LoginPageSt = styled.div``;
 
 const LoginPage = () => {
-    return <div>LoginPage</div>;
+    return <LoginPageSt>LoginPage</LoginPageSt>;
 };
 
 export default LoginPage;

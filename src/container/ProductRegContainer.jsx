@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import useInput from '../hooks/useInput';
-import Input from '../components/common/Input';
+import Input, { InputFile } from '../components/common/Input';
 import Textarea from '../components/common/Textarea';
 import Button from '../components/common/Button';
 import { useQueryClient, useMutation } from 'react-query';
@@ -18,16 +18,22 @@ const ProductRegContainer = () => {
     const [productDesc, setProductDesc, onChangeProductDesc] = useInput();
     const [tradeItem, setTradeItem, onChangeTradeItem] = useInput();
     const [location, setLocation, onChangeLocation] = useInput();
+    const [cate, setCate, onChangeCate] = useInput('기타');
 
     //이미지
     const [image, setImage] = useState(null);
     const [multipleImage, setMultipleImage] = useState([]);
+    const [imgName, setImgName] = useState(null);
+    const [multipleImgName, setMultipleImgName] = useState([]);
     const imgRef = useRef();
     const multipleImgRef = useRef();
 
     //이미지 업로드 시 미리보기
+
     const handleImageChange = (event) => {
         const file = event.target.files[0];
+        const { name } = file;
+        setImgName(name);
         imgRef.current = file;
         const reader = new FileReader();
         reader.readAsDataURL(file);
@@ -41,19 +47,22 @@ const ProductRegContainer = () => {
         const selectedFiles = Array.from(files);
         multipleImgRef.current = selectedFiles;
         const fileReaders = [];
+        const fileNames = [];
         selectedFiles.forEach((file) => {
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onloadend = () => {
                 const imageDataURL = reader.result;
                 fileReaders.push(imageDataURL);
+                fileNames.push(file.name);
                 if (fileReaders.length === selectedFiles.length) {
                     setMultipleImage(fileReaders);
+                    setMultipleImgName(fileNames);
                 }
             };
         });
     };
-
+    console.log(multipleImgName);
     // 트레이드 아이템 등록
     const queryClient = useQueryClient();
 
@@ -67,16 +76,30 @@ const ProductRegContainer = () => {
         e.preventDefault();
         const img = imgRef.current;
         const multipleImg = multipleImgRef.current;
+        const items = {
+            itemName: title,
+            itemContent: productDesc,
+            itemOneContent: productOneDesc,
+            tradingItem: tradeItem,
+            tradingPosition: location,
+            cate: cate,
+        };
         const formData = new FormData();
-        formData.append('itemName', title);
-        formData.append('itemOneContent', productOneDesc);
-        formData.append('itemContent', productDesc);
-        formData.append('tradingItem', tradeItem);
-        formData.append('tradingPosition', location);
-        formData.append('image', img);
-        multipleImg.forEach((file) => {
-            formData.append(`image`, file);
-        });
+
+        formData.append(
+            'item',
+            new Blob([JSON.stringify(items)], {
+                type: 'application/json',
+            })
+        );
+
+        formData.append('mainImg', img);
+        multipleImg &&
+            multipleImg.forEach((file) => {
+                formData.append(`img`, file);
+            });
+
+        // console.log(items);
 
         // mutation.mutateAsync(formData);
 
@@ -98,6 +121,7 @@ const ProductRegContainer = () => {
             encType="multipart/form-data"
         >
             <ImgBox>
+                <span className="preview-img-title">이미지 미리보기</span>
                 <ProductThumbnail>
                     <img src={image ? image : '/img/img0.jpg'} alt={'img'} />
                 </ProductThumbnail>
@@ -112,37 +136,39 @@ const ProductRegContainer = () => {
                 </ProductImgs>
             </ImgBox>
             <div className="core">
-                <Input
+                <InputFile
                     label={'대표이미지'}
-                    type={'file'}
                     accept="image/*"
-                    onChangeHandler={handleImageChange}
+                    $idName={'info-img'}
+                    $value={imgName}
+                    onChange={handleImageChange}
                 />
-                <Input
+                <InputFile
                     label={'이미지'}
-                    type={'file'}
                     accept="image/*"
-                    onChangeHandler={MultipleImageHander}
+                    $idName={'info-imgs'}
+                    $value={multipleImgName.join(',')}
+                    onChange={MultipleImageHander}
                     multiple
                 />
-                <Input label={'제목'} type={'text'} value={title} onChangeHandler={onChangeTitle} />
+                <Input label={'제목'} type={'text'} value={title} onChange={onChangeTitle} />
                 <Textarea
                     label={'상품 한 줄 설명'}
                     type={'text'}
                     value={productOneDesc}
-                    onChangeHandler={onChangeProductOneDesc}
+                    onChange={onChangeProductOneDesc}
                 />
                 <Textarea
                     label={'어떤 물품이랑 교환하실 건가요?'}
                     type={'text'}
                     value={tradeItem}
-                    onChangeHandler={onChangeTradeItem}
+                    onChange={onChangeTradeItem}
                 />
                 <Textarea
                     label={'어디서 교환하실 건가요'}
                     type={'text'}
                     value={location}
-                    onChangeHandler={onChangeLocation}
+                    onChange={onChangeLocation}
                 />
             </div>
             <div className="sub">
@@ -150,8 +176,10 @@ const ProductRegContainer = () => {
                     label={'상세한 내용을 적어주세요'}
                     type={'text'}
                     value={productDesc}
-                    onChangeHandler={onChangeProductDesc}
+                    onChange={onChangeProductDesc}
                     $heigth={'600px'}
+                    $padding={'50px'}
+                    $center
                 />
             </div>
             <Button.Primary>상품 등록하기</Button.Primary>

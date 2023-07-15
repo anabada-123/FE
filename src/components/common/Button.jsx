@@ -30,8 +30,8 @@ const ButtonStyle = styled.button`
     gap: 20px;
     font-size: ${(props) => props.$font_size || '14px'};
     font-weight: 700;
-    box-shadow: 0 3px 0 #333;
-    transform: translateY(-3px);
+    box-shadow: 0 5px 0 #333;
+    transform: translateY(-5px);
     transition: all 0.2s ease-in-out;
     cursor: pointer;
 

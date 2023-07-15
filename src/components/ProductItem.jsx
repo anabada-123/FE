@@ -2,7 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 const ProductCard = styled.li`
-    width: 230px;
+    width: calc(20% - 16px);
+    min-width: 230px;
     /* height: 300px; */
     /* padding: 20px; */
     overflow: hidden;
@@ -12,7 +13,6 @@ const ProductCard = styled.li`
     transform: translateY(-8px);
     transition: all 0.2s ease-in-out;
     cursor: pointer;
-    /* border-bottom: 10px solid #333; */
     &:hover {
         box-shadow: 0 0px 0 #333;
         transform: translateY(0px);
@@ -34,14 +34,22 @@ const ProductInfo = styled.div`
     h3 {
         font-size: 1.4rem;
         font-weight: bold;
-        padding: 12px 20px 8px;
+        max-height: 54px;
+        padding: 8px 20px 6px;
         /* margin-bottom: 12px; */
         border-bottom: 2px solid #333;
+        line-height: 1.05;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     .prpduct-seller {
         font-size: 1.1rem;
         padding: 8px 20px;
         border-bottom: 2px solid #333;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
         color: #bf2929;
     }
     .prpduct-data {
@@ -53,8 +61,8 @@ const ProductInfo = styled.div`
 
 const ProductItem = ({ id, title, seller, date, srcImg, altImg }) => {
     return (
-        <Link to={`/productdetail/${id}`}>
-            <ProductCard key={id}>
+        <ProductCard key={id}>
+            <Link to={`/productdetail/${id}`}>
                 <ProductImgWrap>
                     <img src={'/img/img0.jpg'} alt={altImg} />
                 </ProductImgWrap>
@@ -63,8 +71,8 @@ const ProductItem = ({ id, title, seller, date, srcImg, altImg }) => {
                     <p className="prpduct-seller">{seller}</p>
                     <p className="prpduct-data">{date}</p>
                 </ProductInfo>
-            </ProductCard>
-        </Link>
+            </Link>
+        </ProductCard>
     );
 };
 

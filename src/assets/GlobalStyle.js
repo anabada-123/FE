@@ -1,6 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
-
+import { PINK_COLOR } from './colors';
 const GlobalStyle = createGlobalStyle`
 @font-face {
     font-family: 'SBAggroB';
@@ -30,10 +30,10 @@ const GlobalStyle = createGlobalStyle`
     }
     h2.section-title{
         padding: 14px 20px 10px;
-    margin: 50px 0 10px;
+    margin: 0 0 10px;
     font-size: 1.8rem;
     font-weight: bold;
-    color: hotpink;
+    color: ${PINK_COLOR[0]};
     border: 2px solid #333;
     border-radius: 20px;
     box-shadow: 0 3px 0 #333;

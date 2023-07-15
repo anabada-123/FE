@@ -12,12 +12,12 @@ const ProductRegPageSt = styled.div`
 `;
 const ProductDetailPage = () => {
     return (
-        <>
-            <h2 className="section-title">아나바나 물품 상세페이지</h2>
+        <div className="center" style={{ padding: `50px 0` }}>
+            <h2 className="section-title">아나바다 물품 상세페이지</h2>
             <ProductRegPageSt>
                 <ProductDetailContainer />
             </ProductRegPageSt>
-        </>
+        </div>
     );
 };
 
