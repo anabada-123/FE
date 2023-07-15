@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ProductList } from '../components/ProductList';
 import { useQuery } from 'react-query';
@@ -61,10 +61,21 @@ const PageNum = styled.div`
 //[ ]파람스 요청 확인
 const MainpageContainer = () => {
     const [currentPage, setCurrentPage] = useState(1);
-    const { data } = useQuery(['items', { currentPage }], getTradingItems);
+    const [responseData, setResponseData] = useState([]);
+    const [responsePage, setResponsePage] = useState([]);
+    const { data } = useQuery('items', () => getTradingItems(currentPage));
 
-    const totalPages = 20; // 전체 페이지 수
+    // console.log(currentPage);
+    useEffect(() => {
+        if (data) {
+            setResponseData(data.items);
+            setResponsePage(data.pageSize);
+        }
+    }, [data, currentPage]);
+    const totalPages = responsePage; // 전체 페이지 수
     const maxButtons = 5; // 표시할 버튼의 최대 개수
+    // console.log(responseData);
+    // console.log(responsePage);
 
     const handleClick = (page) => {
         setCurrentPage(page);
@@ -92,7 +103,7 @@ const MainpageContainer = () => {
 
     return (
         <>
-            <ProductList data={data && data} />
+            {responseData ? <ProductList data={responseData} /> : null}
             <PageNum>
                 <button onClick={() => handleClick(currentPage - 1)}>
                     <AiFillCaretLeft />

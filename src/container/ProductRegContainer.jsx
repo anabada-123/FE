@@ -101,12 +101,12 @@ const ProductRegContainer = () => {
 
         // console.log(items);
 
-        // mutation.mutateAsync(formData);
+        mutation.mutateAsync(formData);
 
         //formData 콘솔 확인하기
-        for (let value of formData.values()) {
-            console.log(value);
-        }
+        // for (let value of formData.values()) {
+        //     console.log(value);
+        // }
         setTitle('');
         setProductOneDesc('');
         setProductDesc('');

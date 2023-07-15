@@ -1,9 +1,12 @@
 import axios from 'axios';
 
 //전체조회
-const getTradingItems = async ({ currentPage }) => {
+const getTradingItems = async (currentPage) => {
     try {
-        const response = await axios.get(`http://localhost:3001/item`);
+        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/items`, {
+            params: { page: currentPage },
+        });
+        console.log(currentPage);
         return response.data;
     } catch (error) {
         // if (error.response.status === 401) {
@@ -19,8 +22,7 @@ const addTradingItems = async (formData) => {
                 'Content-Type': 'multipart/form-data',
             },
         };
-
-        await axios.post('http://localhost:3001/item', formData, config);
+        await axios.post(`${process.env.REACT_APP_SERVER_URL}/items`, formData, config);
         alert('상품등록에 성공했습니다');
     } catch (error) {
         alert('상품등록에 실패했습니다.');

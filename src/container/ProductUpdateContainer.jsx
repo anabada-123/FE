@@ -104,6 +104,8 @@ const ProductUpdateContainer = () => {
             tradingItem: tradeItem,
             tradingPosition: location,
             cate: cate,
+            status: '판매완료',
+            check: true,
         };
         const formData = new FormData();
 
@@ -132,7 +134,7 @@ const ProductUpdateContainer = () => {
             img: image,
             imgList: multipleImage,
         };
-        await mutation.mutate(updateReducer);
+        await mutation.mutate(formData);
 
         //formData 콘솔 확인하기
         // for (let value of formData.values()) {
@@ -144,7 +146,7 @@ const ProductUpdateContainer = () => {
         setTradeItem('');
         setTradeItem('');
         setLocation('');
-        nav(-1);
+        // nav(-1);
     };
     return (
         <ProductForm

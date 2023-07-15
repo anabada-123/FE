@@ -26,6 +26,8 @@ const ProductImgWrap = styled.div`
     overflow: hidden;
     img {
         width: 100%;
+        object-fit: cover;
+        object-position: center;
     }
 `;
 
@@ -35,7 +37,7 @@ const ProductInfo = styled.div`
         font-size: 1.4rem;
         font-weight: bold;
         max-height: 54px;
-        padding: 8px 20px 6px;
+        padding: 10px 20px 6px;
         /* margin-bottom: 12px; */
         border-bottom: 2px solid #333;
         line-height: 1.05;
@@ -64,7 +66,7 @@ const ProductItem = ({ id, title, seller, date, srcImg, altImg }) => {
         <ProductCard key={id}>
             <Link to={`/productdetail/${id}`}>
                 <ProductImgWrap>
-                    <img src={'/img/img0.jpg'} alt={altImg} />
+                    <img src={srcImg} alt={altImg} />
                 </ProductImgWrap>
                 <ProductInfo>
                     <h3>{title}</h3>
