@@ -134,8 +134,12 @@ const ProductSubmitForm = ({
                     $center
                 />
             </div>
-            <Button.Secondary onClick={() => nav('/')}>취소하기</Button.Secondary>
-            <Button.Primary>상품 등록하기</Button.Primary>
+            <Button.Secondary onClick={() => nav('/')} $width={'100px'} $center={'center'}>
+                취소하기
+            </Button.Secondary>
+            <Button.Primary $width={'100px'} $center={'center'}>
+                상품 등록하기
+            </Button.Primary>
         </ProductForm>
     );
 };

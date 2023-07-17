@@ -79,7 +79,8 @@ const IconButton = ({ children, ...restProps }) => {
             $font_size={'20px'}
             $center={'center'}
             $active_color={blueColor[1]}
-            // $width={'40px'}
+            $width={'40px'}
+            $padding={'none'}
         >
             {children}
         </ButtonStyle>
