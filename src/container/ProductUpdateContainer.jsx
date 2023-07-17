@@ -42,22 +42,22 @@ const ProductUpdateContainer = () => {
     const { isLoading, error, item } = useSelector((state) => {
         return state.item;
     });
-    const base64data = async (item) => {
-        try {
-            // 이미지 다운로드
-            const response = await fetch(item);
-            const imageBlob = await response.blob();
+    // const base64data = async (item) => {
+    //     try {
+    //         // 이미지 다운로드
+    //         const response = await fetch(item);
+    //         const imageBlob = await response.blob();
 
-            // Base64 인코딩
-            const reader = new FileReader();
-            reader.readAsDataURL(imageBlob);
-            reader.onloadend = () => {
-                imgRef.current = reader.result; // Base64 데이터를 상태로 저장
-            };
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    };
+    //         // Base64 인코딩
+    //         const reader = new FileReader();
+    //         reader.readAsDataURL(imageBlob);
+    //         reader.onloadend = () => {
+    //             imgRef.current = reader.result; // Base64 데이터를 상태로 저장
+    //         };
+    //     } catch (error) {
+    //         console.error('Error:', error);
+    //     }
+    // };
 
     useEffect(() => {
         if (item) {
@@ -69,9 +69,9 @@ const ProductUpdateContainer = () => {
             setImage(item.img);
             setMultipleImage(item.imgList);
             setIsSale(item.check);
-            // imgRef.current = item.img;
-            // multipleImgRef.current = item.imgList;
-            console.log(item.check);
+            imgRef.current = item.img;
+            multipleImgRef.current = item.imgList;
+            // console.log(item.check);
             // base64data(item.img);
         }
         // }
@@ -174,9 +174,9 @@ const ProductUpdateContainer = () => {
         await mutation.mutateAsync(formData);
 
         // formData 콘솔 확인하기
-        for (let value of formData.values()) {
-            console.log(value);
-        }
+        // for (let value of formData.values()) {
+        //     console.log(value);
+        // }
         setTitle('');
         setProductOneDesc('');
         setProductDesc('');
