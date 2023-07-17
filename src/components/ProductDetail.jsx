@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
-import Button from '../components/common/Button';
+import Button from '../components/common/Button/Button';
 import { MONO_COLOR } from '../assets/colors';
 import { useNavigate } from 'react-router-dom';
 

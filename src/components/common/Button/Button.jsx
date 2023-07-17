@@ -1,6 +1,6 @@
 import React from 'react';
 import { styled } from 'styled-components';
-import { blueColor, BLUE_COLOR } from '../../assets/colors';
+import { blueColor, BLUE_COLOR } from '../../../assets/colors';
 // ----- Button styled-conponent props guide-----
 // $width : 버튼의 가로 사이즈
 // $center : justify-content 속성 값

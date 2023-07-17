@@ -35,6 +35,9 @@ const ProductImgWrap = styled.div`
 const ProductInfo = styled.div`
     /* padding: 20px; */
     h3 {
+        height: 65px;
+        display: flex;
+        align-items: center;
         font-size: 1.4rem;
         font-weight: bold;
         padding: 10px 20px 6px;
@@ -69,7 +72,7 @@ const ProductItem = ({ id, title, seller, date, srcImg, altImg }) => {
     const titleText =
         title.length > maxTitleLength ? title.slice(0, maxTitleLength) + '...' : title;
     return (
-        <ProductCard key={id}>
+        <ProductCard>
             <Link to={`/productdetail/${id}`}>
                 <ProductImgWrap>
                     <img src={srcImg} alt={altImg} />

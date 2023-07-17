@@ -1,5 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
     id: 1,
@@ -24,7 +23,6 @@ export const itemSlice = createSlice({
             };
         },
     },
-    extraReducers: {},
 });
 
 export const { updateItem } = itemSlice.actions;

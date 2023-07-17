@@ -103,16 +103,24 @@ export const ToggleIsSale = styled.div`
         border: 2px solid #333;
         transition: all 0.3s ease-in-out;
         color: #777;
+        box-shadow: 0 8px 0px #333;
+        transform: translateY(-8px);
+        /* background-color: ${YELLOW_COLOR[0]}; */
         &:first-child {
             border-radius: 10px 0 0 10px;
             &:hover {
                 background-color: ${YELLOW_COLOR[1]};
+                color: #000;
+            }
+            &.active {
+                background-color: ${YELLOW_COLOR[0]};
             }
         }
         &:last-child {
             border-radius: 0 10px 10px 0;
             &:hover {
                 background-color: ${BLUE_COLOR.Turkish};
+                color: #000;
             }
             &.active {
                 background-color: ${BLUE_COLOR.green};
@@ -120,9 +128,8 @@ export const ToggleIsSale = styled.div`
         }
 
         &.active {
-            box-shadow: 0 8px 0px #333;
-            transform: translateY(-8px);
-            background-color: ${YELLOW_COLOR[0]};
+            transform: translateY(0);
+            box-shadow: none;
             color: #000;
             &:hover {
                 transform: translateY(0px);

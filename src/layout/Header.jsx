@@ -8,7 +8,7 @@ import { BiAddToQueue } from 'react-icons/bi';
 import { GiCube } from 'react-icons/gi';
 import { BLUE_COLOR } from '../assets/colors';
 import Input from '../components/common/Input';
-import Button from '../components/common/Button';
+import Button from '../components/common/Button/Button';
 const HeaderSt = styled.header`
     width: 100%;
     background-color: #efefef;

@@ -21,6 +21,7 @@ const productInfoMock = {
 
 const ProductDetailContainer = () => {
     const { id } = useParams();
+    const nav = useNavigate();
     const dispatch = useDispatch();
     const queryClient = useQueryClient();
     const mutation = useMutation((id) => deleteTradingItems(id), {
@@ -28,8 +29,9 @@ const ProductDetailContainer = () => {
             queryClient.invalidateQueries('tradingItem');
         },
     });
-    const onClickDelete = (id) => {
-        mutation.mutate(id);
+    const onClickDelete = async (id) => {
+        await mutation.mutateAsync(id);
+        nav('/');
     };
     const { data } = useQuery('tradingItem', () => getTradingItem(id), {
         onSuccess: (data) => {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import ProductRegContainer from '../container/ProductRegContainer';
+import ProductCreateContainer from '../container/ProductCreateContainer';
 import { BLUE_COLOR, PINK_COLOR, MONO_COLOR, YELLOW_COLOR } from '../assets/colors';
 const ProductRegPageSt = styled.div`
     padding: 30px 0 60px;
@@ -29,7 +29,7 @@ const SectionTitle = styled.h2`
     color: ${MONO_COLOR[0]};
 `;
 
-const ProductRegPage = () => {
+const ProductCreatePage = () => {
     return (
         <div style={{ backgroundColor: BLUE_COLOR.green }}>
             <TitleWrap>
@@ -37,11 +37,11 @@ const ProductRegPage = () => {
             </TitleWrap>
             <div className="center">
                 <ProductRegPageSt>
-                    <ProductRegContainer />
+                    <ProductCreateContainer />
                 </ProductRegPageSt>
             </div>
         </div>
     );
 };
 
-export default ProductRegPage;
+export default ProductCreatePage;

@@ -19,6 +19,7 @@ export const ProductList = ({ data }) => {
                 data.map((item) => {
                     return (
                         <ProductItem
+                            key={`item-${item.id}`}
                             id={item.id}
                             title={item.itemName}
                             seller={'mock'}

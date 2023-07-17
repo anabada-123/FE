@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import useInput from '../hooks/useInput';
 import Input, { InputFile } from '../components/common/Input';
 import Textarea from '../components/common/Textarea';
-import Button from '../components/common/Button';
+import Button from '../components/common/Button/Button';
+import ToggleButton from '../components/common/Button/ToggleButton';
 import { useQueryClient, useMutation } from 'react-query';
 import { updateTradingItem } from '../api/tradingItem';
 import {
@@ -13,7 +14,7 @@ import {
     ProductForm,
     NoneImg,
     ToggleIsSale,
-} from '../components/ProductRegSt';
+} from '../components/ProductSubmitFormStyle';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 // import { updateItem } from '../redux/modules/itemSlice';
@@ -41,6 +42,22 @@ const ProductUpdateContainer = () => {
     const { isLoading, error, item } = useSelector((state) => {
         return state.item;
     });
+    const base64data = async (item) => {
+        try {
+            // 이미지 다운로드
+            const response = await fetch(item);
+            const imageBlob = await response.blob();
+
+            // Base64 인코딩
+            const reader = new FileReader();
+            reader.readAsDataURL(imageBlob);
+            reader.onloadend = () => {
+                imgRef.current = reader.result; // Base64 데이터를 상태로 저장
+            };
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
 
     useEffect(() => {
         if (item) {
@@ -49,19 +66,19 @@ const ProductUpdateContainer = () => {
             setProductDesc(item.itemContent);
             setTradeItem(item.tradingItem);
             setLocation(item.tradingPosition);
-            // setImgName(item.img);
-            // setMultipleImgName(item.imgList);
             setImage(item.img);
             setMultipleImage(item.imgList);
             setIsSale(item.check);
-            imgRef.current = item.img;
-            multipleImgRef.current = item.imgList;
+            // imgRef.current = item.img;
+            // multipleImgRef.current = item.imgList;
+            console.log(item.check);
+            // base64data(item.img);
         }
         // }
     }, []);
 
     //이미지 업로드 시 미리보기
-    const handleImageChange = (event) => {
+    const ImageChangehandler = (event) => {
         const file = event.target.files[0];
         const { name } = file;
         setImgName(name);
@@ -154,7 +171,6 @@ const ProductUpdateContainer = () => {
             multipleImg.forEach((file) => {
                 formData.append(`img`, file);
             });
-
         await mutation.mutateAsync(formData);
 
         // formData 콘솔 확인하기
@@ -167,12 +183,13 @@ const ProductUpdateContainer = () => {
         setTradeItem('');
         setTradeItem('');
         setLocation('');
-        // nav(-1);
+        nav(-1);
     };
 
     const onClickIsSale = (e) => {
         e.preventDefault();
         setIsSale(!isSale);
+        console.log(isSale);
     };
 
     return (
@@ -214,14 +231,7 @@ const ProductUpdateContainer = () => {
                 </ProductImgs>
             </ImgBox>
             <div className="core">
-                <ToggleIsSale>
-                    <button className={!isSale ? `active` : ``} onClick={onClickIsSale}>
-                        판매중
-                    </button>
-                    <button className={isSale ? `active` : ``} onClick={onClickIsSale}>
-                        판매완료
-                    </button>
-                </ToggleIsSale>
+                <ToggleButton toggle={isSale} onClickHandler={onClickIsSale} />
                 <InputFile
                     label={'이미지'}
                     accept="image/*"
@@ -236,7 +246,7 @@ const ProductUpdateContainer = () => {
                     accept="image/*"
                     $idName={'info-img'}
                     $value={imgName}
-                    onChange={handleImageChange}
+                    onChange={ImageChangehandler}
                 />
                 <Input
                     label={'제목'}
