@@ -4,11 +4,14 @@ import { PINK_COLOR } from '../../assets/colors';
 const TextareaBox = styled.div`
     width: 100%;
     text-align: start;
+    position: relative;
     .coreValue {
         /* position: absolute; */
         color: ${PINK_COLOR[0]};
         font-size: 0.9rem;
         margin-left: 4px;
+        position: absolute;
+        right: 12px;
     }
 `;
 

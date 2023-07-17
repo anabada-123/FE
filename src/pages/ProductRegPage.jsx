@@ -23,6 +23,7 @@ const TitleWrap = styled.div`
 const SectionTitle = styled.h2`
     width: 100%;
     max-width: 1280px;
+    padding: 0 30px;
     font-size: 2rem;
     /* background-color: ${YELLOW_COLOR[0]}; */
     color: ${MONO_COLOR[0]};

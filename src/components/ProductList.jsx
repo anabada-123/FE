@@ -7,7 +7,7 @@ const ProductListSt = styled.ul`
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
-    gap: 50px 20px;
+    gap: 50px 17px;
 `;
 
 export const ProductList = ({ data }) => {

@@ -37,13 +37,13 @@ const ProductInfo = styled.div`
     h3 {
         font-size: 1.4rem;
         font-weight: bold;
-        max-height: 54px;
         padding: 10px 20px 6px;
         /* margin-bottom: 12px; */
         border-bottom: 2px solid #333;
         line-height: 1.05;
-        white-space: nowrap;
+        /* white-space: nowrap; */
         overflow: hidden;
+        white-space: pre-wrap;
         text-overflow: ellipsis;
     }
     .prpduct-seller {
@@ -63,6 +63,11 @@ const ProductInfo = styled.div`
 `;
 
 const ProductItem = ({ id, title, seller, date, srcImg, altImg }) => {
+    const regex = /^(\d{4}-\d{2}-\d{2})/;
+    const match = date.match(regex)?.[0];
+    const maxTitleLength = 15;
+    const titleText =
+        title.length > maxTitleLength ? title.slice(0, maxTitleLength) + '...' : title;
     return (
         <ProductCard key={id}>
             <Link to={`/productdetail/${id}`}>
@@ -70,9 +75,9 @@ const ProductItem = ({ id, title, seller, date, srcImg, altImg }) => {
                     <img src={srcImg} alt={altImg} />
                 </ProductImgWrap>
                 <ProductInfo>
-                    <h3>{title}</h3>
+                    <h3>{titleText}</h3>
                     <p className="prpduct-seller">{seller}</p>
-                    <p className="prpduct-data">{date}</p>
+                    <p className="prpduct-data">{match}</p>
                 </ProductInfo>
             </Link>
         </ProductCard>

@@ -10,6 +10,8 @@ const InputBox = styled.div`
         color: ${PINK_COLOR[0]};
         font-size: 0.9rem;
         margin-left: 4px;
+        position: absolute;
+        right: 12px;
     }
     .fileCoreValue {
         position: absolute;

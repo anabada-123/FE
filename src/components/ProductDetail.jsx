@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import Button from '../components/common/Button';
 import { MONO_COLOR } from '../assets/colors';
 import { useNavigate } from 'react-router-dom';
 
 const ImgBox = styled.div`
-    width: 40%;
-    height: 580px;
+    width: 445px;
+    height: 590px;
     border-radius: 25px;
     overflow: hidden;
     border: 2px solid #333;
@@ -32,9 +33,12 @@ const ProductImgs = styled.div`
         object-fit: cover;
         object-position: center;
         border-right: 2px solid #333;
-
+        cursor: pointer;
         &:nth-child(4) {
             border-right: none;
+        }
+        &:hover {
+            filter: brightness(0.8);
         }
     }
 `;
@@ -49,7 +53,7 @@ const ProductInfo = styled.div`
     gap: 50px;
     .core {
         width: calc(60% - 50px);
-        height: 590px;
+        /* height: 590px; */
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -129,6 +133,13 @@ const ProductInfo = styled.div`
 // MEMO : 서버주소/static/img/${변수}
 const ProductDetail = ({ data, btnDeleteEvent }) => {
     const nav = useNavigate();
+    const [mainImg, setMainImg] = useState(data.img);
+    const subImg = data.imgList;
+
+    const onClickImageHandler = (idx) => {
+        setMainImg(subImg[idx]);
+    };
+
     try {
         return (
             <>
@@ -137,12 +148,19 @@ const ProductDetail = ({ data, btnDeleteEvent }) => {
                         <ProductInfo name="product_reg_form" encType="multipart/form-data">
                             <ImgBox>
                                 <ProductThumbnail>
-                                    <img src={data.img} alt={'img'} />
+                                    <img src={mainImg} alt={'main_img'} />
                                 </ProductThumbnail>
                                 <ProductImgs>
                                     {data.imgList ? (
                                         data.imgList.map((img, idx) => {
-                                            return <img key={idx} src={img} alt="img" />;
+                                            return (
+                                                <img
+                                                    key={idx}
+                                                    src={img}
+                                                    alt="img"
+                                                    onClick={() => onClickImageHandler(idx)}
+                                                />
+                                            );
                                         })
                                     ) : (
                                         <img src="/img/img0.jpg" alt="img" />

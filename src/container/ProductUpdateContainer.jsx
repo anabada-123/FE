@@ -12,6 +12,7 @@ import {
     ProductImgs,
     ProductForm,
     NoneImg,
+    ToggleIsSale,
 } from '../components/ProductRegSt';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -26,7 +27,7 @@ const ProductUpdateContainer = () => {
     const [tradeItem, setTradeItem, onChangeTradeItem] = useInput();
     const [location, setLocation, onChangeLocation] = useInput();
     const [cate, setCate, onChangeCate] = useInput('기타');
-
+    const [isSale, setIsSale] = useState(true);
     //이미지
     const [image, setImage] = useState('');
     const [multipleImage, setMultipleImage] = useState([]);
@@ -52,6 +53,7 @@ const ProductUpdateContainer = () => {
             // setMultipleImgName(item.imgList);
             setImage(item.img);
             setMultipleImage(item.imgList);
+            setIsSale(item.check);
             imgRef.current = item.img;
             multipleImgRef.current = item.imgList;
         }
@@ -136,7 +138,7 @@ const ProductUpdateContainer = () => {
             tradingPosition: location,
             cate: cate,
             status: '판매완료',
-            check: true,
+            check: isSale,
         };
         const formData = new FormData();
 
@@ -167,6 +169,12 @@ const ProductUpdateContainer = () => {
         setLocation('');
         // nav(-1);
     };
+
+    const onClickIsSale = (e) => {
+        e.preventDefault();
+        setIsSale(!isSale);
+    };
+
     return (
         <ProductForm
             onSubmit={ProductRegSubmitHandler}
@@ -206,6 +214,23 @@ const ProductUpdateContainer = () => {
                 </ProductImgs>
             </ImgBox>
             <div className="core">
+                <ToggleIsSale>
+                    <button className={!isSale ? `active` : ``} onClick={onClickIsSale}>
+                        판매중
+                    </button>
+                    <button className={isSale ? `active` : ``} onClick={onClickIsSale}>
+                        판매완료
+                    </button>
+                </ToggleIsSale>
+                <InputFile
+                    label={'이미지'}
+                    accept="image/*"
+                    $idName={'info-imgs'}
+                    $value={multipleImgName.join(',')}
+                    onChange={MultipleImageHander}
+                    $coreValue={imgRef.current ? false : true}
+                    multiple
+                />
                 <InputFile
                     label={'대표이미지'}
                     accept="image/*"
@@ -213,32 +238,37 @@ const ProductUpdateContainer = () => {
                     $value={imgName}
                     onChange={handleImageChange}
                 />
-                <InputFile
-                    label={'이미지'}
-                    accept="image/*"
-                    $idName={'info-imgs'}
-                    $value={multipleImgName.join(',')}
-                    onChange={MultipleImageHander}
-                    multiple
+                <Input
+                    label={'제목'}
+                    type={'text'}
+                    value={title}
+                    onChange={onChangeTitle}
+                    placeholder="제목을 입력해주세요"
+                    $coreValue={title ? false : true}
                 />
-                <Input label={'제목'} type={'text'} value={title} onChange={onChangeTitle} />
                 <Textarea
                     label={'상품 한 줄 설명'}
                     type={'text'}
                     value={productOneDesc}
                     onChange={onChangeProductOneDesc}
+                    placeholder="교환 물품에 대한 한 줄 설명을 해주세요"
+                    $coreValue={productOneDesc ? false : true}
                 />
                 <Textarea
                     label={'어떤 물품이랑 교환하실 건가요?'}
                     type={'text'}
                     value={tradeItem}
                     onChange={onChangeTradeItem}
+                    placeholder="어떤 물품이랑 교환하실 건가요?"
+                    $coreValue={tradeItem ? false : true}
                 />
                 <Textarea
                     label={'어디서 교환하실 건가요'}
                     type={'text'}
                     value={location}
                     onChange={onChangeLocation}
+                    placeholder="어디서 교환하실 건가요"
+                    $coreValue={location ? false : true}
                 />
             </div>
             <div className="sub">
@@ -249,11 +279,19 @@ const ProductUpdateContainer = () => {
                     onChange={onChangeProductDesc}
                     $heigth={'600px'}
                     $padding={'50px'}
+                    placeholder="상세한 내용을 적어주세요"
+                    $coreValue={productDesc ? false : true}
                     $center
                 />
             </div>
-            <Button.Primary>상품 수정하기</Button.Primary>
-            <Button.Primary>상품 수정하기</Button.Primary>
+            <Button.Primary
+                onClick={() => {
+                    nav(-1);
+                }}
+            >
+                수정 취소하기
+            </Button.Primary>
+            <Button.Secondary>상품 수정하기</Button.Secondary>
         </ProductForm>
     );
 };

@@ -47,12 +47,17 @@ const GlobalStyle = createGlobalStyle`
     sans-serif;
     }
 
+    pre{
+        line-height: 1.4;
+    }
+
     #root {
         min-height: 100vh;
     }
     .center{
         max-width: 1280px;
         min-width: 800px;
+        padding: 0 30px;
         margin: auto;
     }
 `;

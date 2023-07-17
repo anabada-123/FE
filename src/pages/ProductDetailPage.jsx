@@ -12,7 +12,7 @@ const ProductRegPageSt = styled.div`
 `;
 const ProductDetailPage = () => {
     return (
-        <div className="center" style={{ padding: `50px 0` }}>
+        <div className="center" style={{ paddingTop: `50px`, paddingBottom: `50px` }}>
             <h2 className="section-title">아나바다 물품 상세페이지</h2>
             <ProductRegPageSt>
                 <ProductDetailContainer />

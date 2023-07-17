@@ -11,10 +11,11 @@ export const ProductForm = styled.form`
     gap: 50px;
     .core {
         width: calc(60% - 50px);
-        height: 590px;
+        /* height: 590px; */
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        gap: 20px;
     }
     .sub {
         width: 100%;
@@ -62,8 +63,12 @@ export const ProductImgs = styled.div`
         object-fit: cover;
         object-position: center;
         border-right: 2px solid #333;
+        cursor: pointer;
         &:nth-child(4) {
             border-right: none;
+        }
+        &:hover {
+            filter: brightness(0.8);
         }
     }
 `;
@@ -84,5 +89,45 @@ export const NoneImg = styled.div`
     p {
         margin-top: 15px;
         color: #777;
+    }
+`;
+
+export const ToggleIsSale = styled.div`
+    /* min-height: 54px; */
+    display: flex;
+    button {
+        background-color: ${YELLOW_COLOR[2]};
+        width: 50%;
+        text-align: center;
+        padding: 12px;
+        border: 2px solid #333;
+        transition: all 0.3s ease-in-out;
+        color: #777;
+        &:first-child {
+            border-radius: 10px 0 0 10px;
+            &:hover {
+                background-color: ${YELLOW_COLOR[1]};
+            }
+        }
+        &:last-child {
+            border-radius: 0 10px 10px 0;
+            &:hover {
+                background-color: ${BLUE_COLOR.Turkish};
+            }
+            &.active {
+                background-color: ${BLUE_COLOR.green};
+            }
+        }
+
+        &.active {
+            box-shadow: 0 8px 0px #333;
+            transform: translateY(-8px);
+            background-color: ${YELLOW_COLOR[0]};
+            color: #000;
+            &:hover {
+                transform: translateY(0px);
+                box-shadow: none;
+            }
+        }
     }
 `;
