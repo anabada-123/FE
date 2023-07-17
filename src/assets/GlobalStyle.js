@@ -27,6 +27,9 @@ const GlobalStyle = createGlobalStyle`
     input:focus, textarea:focus {outline: none;}
     textarea{
         resize: none;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
     }
     h2.section-title{
         padding: 14px 20px 10px;

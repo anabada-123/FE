@@ -6,11 +6,18 @@ import Textarea from '../components/common/Textarea';
 import Button from '../components/common/Button';
 import { useQueryClient, useMutation } from 'react-query';
 import { updateTradingItem } from '../api/tradingItem';
-import { ImgBox, ProductThumbnail, ProductImgs, ProductForm } from '../components/ProductRegSt';
+import {
+    ImgBox,
+    ProductThumbnail,
+    ProductImgs,
+    ProductForm,
+    NoneImg,
+} from '../components/ProductRegSt';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 // import { updateItem } from '../redux/modules/itemSlice';
 import { useNavigate } from 'react-router-dom';
+import { BsCardImage } from 'react-icons/bs';
 
 const ProductUpdateContainer = () => {
     const [title, setTitle, onChangeTitle] = useInput();
@@ -67,9 +74,28 @@ const ProductUpdateContainer = () => {
     const MultipleImageHander = (event) => {
         const files = event.target.files;
         const selectedFiles = Array.from(files);
+
+        if (selectedFiles.length > 4) {
+            return alert('이미지는 최대 4장 등록할 수 있습니다.');
+        }
+
         multipleImgRef.current = selectedFiles;
+
         const fileReaders = [];
         const fileNames = [];
+
+        // 첫 번째 이미지는 단일 이미지 미리보기로 유지
+        if (selectedFiles.length > 0) {
+            const firstFile = selectedFiles[0];
+            imgRef.current = firstFile;
+            const firstReader = new FileReader();
+            firstReader.readAsDataURL(firstFile);
+            firstReader.onloadend = () => {
+                setImage(firstReader.result);
+                setImgName(firstFile.name);
+            };
+        }
+
         selectedFiles.forEach((file) => {
             const reader = new FileReader();
             reader.readAsDataURL(file);
@@ -85,6 +111,11 @@ const ProductUpdateContainer = () => {
         });
     };
 
+    const onClickImageHandler = (imageDataURL, idx) => {
+        setImage(imageDataURL);
+        setImgName(multipleImgName[idx]);
+        imgRef.current = multipleImgRef.current[idx];
+    };
     // 트레이드 아이템 등록
     const queryClient = useQueryClient();
     const mutation = useMutation((formData) => updateTradingItem(id, formData), {
@@ -122,24 +153,12 @@ const ProductUpdateContainer = () => {
                 formData.append(`img`, file);
             });
 
-        // console.log(items);
-        const updateReducer = {
-            id: id,
-            itemName: title,
-            itemContent: productDesc,
-            itemOneContent: productOneDesc,
-            tradingPosition: location,
-            tradingItem: tradeItem,
-            cate: '식품',
-            img: image,
-            imgList: multipleImage,
-        };
-        await mutation.mutate(formData);
+        await mutation.mutateAsync(formData);
 
-        //formData 콘솔 확인하기
-        // for (let value of formData.values()) {
-        //     console.log(value);
-        // }
+        // formData 콘솔 확인하기
+        for (let value of formData.values()) {
+            console.log(value);
+        }
         setTitle('');
         setProductOneDesc('');
         setProductDesc('');
@@ -155,17 +174,34 @@ const ProductUpdateContainer = () => {
             encType="multipart/form-data"
         >
             <ImgBox>
-                <span className="preview-img-title">이미지 미리보기</span>
                 <ProductThumbnail>
-                    <img src={image ? image : '/img/img0.jpg'} alt={'img'} />
+                    <span className="preview-img-title">이미지 미리보기</span>
+                    {image ? (
+                        <img src={image} alt="thumbnail_image" />
+                    ) : (
+                        <NoneImg>
+                            <BsCardImage size={50} color={'#777'} />
+                            <p>미리보기 이미지가 없습니다</p>
+                        </NoneImg>
+                    )}
                 </ProductThumbnail>
                 <ProductImgs>
                     {multipleImage ? (
                         multipleImage.map((img, idx) => {
-                            return <img key={idx} src={img} alt="img" />;
+                            return (
+                                <img
+                                    key={idx}
+                                    src={img}
+                                    alt={`images-${idx}`}
+                                    onClick={() => onClickImageHandler(img, idx)}
+                                />
+                            );
                         })
                     ) : (
-                        <img src="/img/img0.jpg" alt="img" />
+                        <NoneImg className="multiple">
+                            <BsCardImage size={30} color={'#777'} />
+                            {/* <p>미리보기 이미지가 없습니다</p> */}
+                        </NoneImg>
                     )}
                 </ProductImgs>
             </ImgBox>
@@ -216,6 +252,7 @@ const ProductUpdateContainer = () => {
                     $center
                 />
             </div>
+            <Button.Primary>상품 수정하기</Button.Primary>
             <Button.Primary>상품 수정하기</Button.Primary>
         </ProductForm>
     );

@@ -18,7 +18,6 @@ export const itemSlice = createSlice({
     initialState,
     reducers: {
         updateItem: (state, action) => {
-            console.log(action.payload);
             return {
                 ...state,
                 item: action.payload,

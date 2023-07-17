@@ -1,9 +1,15 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-
+import { PINK_COLOR } from '../../assets/colors';
 const TextareaBox = styled.div`
     width: 100%;
     text-align: start;
+    .coreValue {
+        /* position: absolute; */
+        color: ${PINK_COLOR[0]};
+        font-size: 0.9rem;
+        margin-left: 4px;
+    }
 `;
 
 const TextareaSt = styled.textarea`
@@ -44,10 +50,11 @@ const TextareaSt = styled.textarea`
     }
 `;
 
-const Textarea = ({ label, ...restProps }) => {
+const Textarea = ({ label, $coreValue, ...restProps }) => {
     return (
         <TextareaBox>
             <label htmlFor="">{label}</label>
+            {$coreValue ? <span className="coreValue">* 필수 입력란 입니다</span> : null}
             <TextareaSt {...restProps} $label={label}></TextareaSt>
         </TextareaBox>
     );

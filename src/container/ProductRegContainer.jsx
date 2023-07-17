@@ -6,8 +6,15 @@ import Textarea from '../components/common/Textarea';
 import Button from '../components/common/Button';
 import { useQueryClient, useMutation } from 'react-query';
 import { addTradingItems } from '../api/tradingItems';
-import { ImgBox, ProductThumbnail, ProductImgs, ProductForm } from '../components/ProductRegSt';
-
+import { useNavigate } from 'react-router-dom';
+import {
+    ImgBox,
+    ProductThumbnail,
+    ProductImgs,
+    ProductForm,
+    NoneImg,
+} from '../components/ProductRegSt';
+import { BsCardImage } from 'react-icons/bs';
 // [ ]스타일과 기능 분리 필요
 // [ ]재사용 컴포넌트 분리 필요
 
@@ -22,14 +29,17 @@ const ProductRegContainer = () => {
 
     //이미지
     const [image, setImage] = useState(null);
-    const [multipleImage, setMultipleImage] = useState([]);
-    const [imgName, setImgName] = useState(null);
+    const [multipleImage, setMultipleImage] = useState('');
+    const [imgName, setImgName] = useState('');
     const [multipleImgName, setMultipleImgName] = useState([]);
     const imgRef = useRef();
     const multipleImgRef = useRef();
 
+    const nav = useNavigate();
+
     //이미지 업로드 시 미리보기
 
+    //대표 이미지 지정
     const handleImageChange = (event) => {
         const file = event.target.files[0];
         const { name } = file;
@@ -42,12 +52,32 @@ const ProductRegContainer = () => {
         };
     };
 
+    //이미지 리스트 등록
     const MultipleImageHander = (event) => {
         const files = event.target.files;
         const selectedFiles = Array.from(files);
+
+        if (selectedFiles.length > 4) {
+            return alert('이미지는 최대 4장 등록할 수 있습니다.');
+        }
+
         multipleImgRef.current = selectedFiles;
+
         const fileReaders = [];
         const fileNames = [];
+
+        // 첫 번째 이미지는 단일 이미지 미리보기로 유지
+        if (selectedFiles.length > 0) {
+            const firstFile = selectedFiles[0];
+            imgRef.current = firstFile;
+            const firstReader = new FileReader();
+            firstReader.readAsDataURL(firstFile);
+            firstReader.onloadend = () => {
+                setImage(firstReader.result);
+                setImgName(firstFile.name);
+            };
+        }
+
         selectedFiles.forEach((file) => {
             const reader = new FileReader();
             reader.readAsDataURL(file);
@@ -62,7 +92,14 @@ const ProductRegContainer = () => {
             };
         });
     };
-    console.log(multipleImgName);
+
+    //이미지 클릭시 대표이미지 수정
+    const onClickImageHandler = (imageDataURL, idx) => {
+        setImage(imageDataURL);
+        setImgName(multipleImgName[idx]);
+        imgRef.current = multipleImgRef.current[idx];
+    };
+    // console.log(multipleImgName);
     // 트레이드 아이템 등록
     const queryClient = useQueryClient();
 
@@ -72,10 +109,39 @@ const ProductRegContainer = () => {
         },
     });
 
-    const ProductRegSubmitHandler = (e) => {
+    const ProductRegSubmitHandler = async (e) => {
         e.preventDefault();
         const img = imgRef.current;
         const multipleImg = multipleImgRef.current;
+
+        let emptyFields = [];
+        if (!title) {
+            emptyFields.push('제목');
+        }
+
+        if (!productOneDesc) {
+            emptyFields.push('한 줄 설명');
+        }
+
+        if (!tradeItem) {
+            emptyFields.push('교환 희망 물품');
+        }
+
+        if (!location) {
+            emptyFields.push('교환 희망 장소');
+        }
+
+        if (!productDesc) {
+            emptyFields.push('상세내용');
+        }
+        if (!img) {
+            emptyFields.push('대표이미지');
+        }
+
+        if (emptyFields.length > 0) {
+            return alert(emptyFields.join(', ') + '을(를) 입력해주세요');
+        }
+
         const items = {
             itemName: title,
             itemContent: productDesc,
@@ -84,6 +150,7 @@ const ProductRegContainer = () => {
             tradingPosition: location,
             cate: cate,
         };
+
         const formData = new FormData();
 
         formData.append(
@@ -99,20 +166,19 @@ const ProductRegContainer = () => {
                 formData.append(`img`, file);
             });
 
-        // console.log(items);
+        for (let value of formData.values()) {
+            console.log(value);
+        }
 
-        mutation.mutateAsync(formData);
+        await mutation.mutateAsync(formData);
 
-        //formData 콘솔 확인하기
-        // for (let value of formData.values()) {
-        //     console.log(value);
-        // }
-        setTitle('');
-        setProductOneDesc('');
-        setProductDesc('');
-        setTradeItem('');
-        setTradeItem('');
-        setLocation('');
+        nav('/');
+        // setTitle('');
+        // setProductOneDesc('');
+        // setProductDesc('');
+        // setTradeItem('');
+        // setTradeItem('');
+        // setLocation('');
     };
     return (
         <ProductForm
@@ -121,54 +187,85 @@ const ProductRegContainer = () => {
             encType="multipart/form-data"
         >
             <ImgBox>
-                <span className="preview-img-title">이미지 미리보기</span>
                 <ProductThumbnail>
-                    <img src={image ? image : '/img/img0.jpg'} alt={'img'} />
+                    <span className="preview-img-title">대표 이미지</span>
+                    {image ? (
+                        <img src={image} alt="thumbnail_image" />
+                    ) : (
+                        <NoneImg>
+                            <BsCardImage size={50} color={'#777'} />
+                            <p>미리보기 이미지가 없습니다</p>
+                        </NoneImg>
+                    )}
                 </ProductThumbnail>
                 <ProductImgs>
                     {multipleImage ? (
                         multipleImage.map((img, idx) => {
-                            return <img key={idx} src={img} alt="img" />;
+                            return (
+                                <img
+                                    key={idx}
+                                    src={img}
+                                    alt={`images-${idx}`}
+                                    onClick={() => onClickImageHandler(img, idx)}
+                                />
+                            );
                         })
                     ) : (
-                        <img src="/img/img0.jpg" alt="img" />
+                        <NoneImg className="multiple">
+                            <BsCardImage size={30} color={'#777'} />
+                            {/* <p>미리보기 이미지가 없습니다</p> */}
+                        </NoneImg>
                     )}
                 </ProductImgs>
             </ImgBox>
             <div className="core">
-                <InputFile
-                    label={'대표이미지'}
-                    accept="image/*"
-                    $idName={'info-img'}
-                    $value={imgName}
-                    onChange={handleImageChange}
-                />
                 <InputFile
                     label={'이미지'}
                     accept="image/*"
                     $idName={'info-imgs'}
                     $value={multipleImgName.join(',')}
                     onChange={MultipleImageHander}
+                    $coreValue={imgRef.current ? false : true}
                     multiple
                 />
-                <Input label={'제목'} type={'text'} value={title} onChange={onChangeTitle} />
+                <InputFile
+                    label={'대표이미지 지정'}
+                    accept="image/*"
+                    $idName={'info-img'}
+                    $value={imgName}
+                    onChange={handleImageChange}
+                />
+                <Input
+                    label={'제목'}
+                    type={'text'}
+                    value={title}
+                    onChange={onChangeTitle}
+                    placeholder="제목을 입력해주세요"
+                    $coreValue={title ? false : true}
+                />
                 <Textarea
                     label={'상품 한 줄 설명'}
                     type={'text'}
                     value={productOneDesc}
                     onChange={onChangeProductOneDesc}
+                    placeholder="교환 물품에 대한 한 줄 설명을 해주세요"
+                    $coreValue={productOneDesc ? false : true}
                 />
                 <Textarea
-                    label={'어떤 물품이랑 교환하실 건가요?'}
+                    label={'교환 희망 물품'}
                     type={'text'}
                     value={tradeItem}
                     onChange={onChangeTradeItem}
+                    placeholder="어떤 물품이랑 교환하실 건가요?"
+                    $coreValue={tradeItem ? false : true}
                 />
                 <Textarea
-                    label={'어디서 교환하실 건가요'}
+                    label={'희망 장소'}
                     type={'text'}
                     value={location}
                     onChange={onChangeLocation}
+                    placeholder="어디서 교환하실 건가요"
+                    $coreValue={location ? false : true}
                 />
             </div>
             <div className="sub">
@@ -179,9 +276,12 @@ const ProductRegContainer = () => {
                     onChange={onChangeProductDesc}
                     $heigth={'600px'}
                     $padding={'50px'}
+                    placeholder="상세한 내용을 적어주세요"
+                    $coreValue={productDesc ? false : true}
                     $center
                 />
             </div>
+            <Button.Secondary onClick={() => nav('/')}>등록 취소하기</Button.Secondary>
             <Button.Primary>상품 등록하기</Button.Primary>
         </ProductForm>
     );

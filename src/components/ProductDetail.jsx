@@ -56,6 +56,7 @@ const ProductInfo = styled.div`
         align-items: center;
         h3 {
             width: 100%;
+            /* min-height: 50px; */
             background-color: #fff;
             padding: 14px 20px 10px;
             margin-bottom: 20px;
@@ -64,15 +65,15 @@ const ProductInfo = styled.div`
             border: 2px solid #333;
             border-bottom: 5px solid #333;
             position: relative;
+            word-wrap: break-word;
+            text-overflow: ellipsis;
             .seller {
                 font-size: 1rem;
                 font-weight: bold;
                 position: absolute;
                 top: 0px;
-
                 right: 0px;
-                bottom: 50%;
-                transform: translateY(-60%);
+                transform: translateY(-200%);
                 color: #1b92d6;
             }
         }
@@ -88,13 +89,16 @@ const ProductInfo = styled.div`
             margin-bottom: 8px;
         }
         pre {
-            min-height: 80px;
+            /* min-height: 80px; */
             font-size: 1rem;
             background-color: #fff;
-            padding: 20px 20px 8px;
+            padding: 16px 20px;
             border-radius: 16px;
             border: 2px solid #333;
             border-bottom: 5px solid #333;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            text-overflow: ellipsis;
         }
         .btn-box {
             display: flex;
@@ -116,73 +120,82 @@ const ProductInfo = styled.div`
             border: 2px solid #333;
             border-bottom: 5px solid #333;
             text-align: center;
+            white-space: pre-wrap;
             word-break: break-word;
         }
     }
 `;
 
 // MEMO : 서버주소/static/img/${변수}
-const ProductDetail = ({ data }) => {
+const ProductDetail = ({ data, btnDeleteEvent }) => {
     const nav = useNavigate();
-    return (
-        <>
-            {data && (
-                <>
-                    <ProductInfo name="product_reg_form" encType="multipart/form-data">
-                        <ImgBox>
-                            <ProductThumbnail>
-                                <img src={data.img} alt={'img'} />
-                            </ProductThumbnail>
-                            <ProductImgs>
-                                {data.imgList ? (
-                                    data.imgList.map((img, idx) => {
-                                        return <img key={idx} src={img} alt="img" />;
-                                    })
-                                ) : (
-                                    <img src="/img/img0.jpg" alt="img" />
-                                )}
-                            </ProductImgs>
-                        </ImgBox>
-                        <div className="core">
-                            <h3>
-                                {data.itemName} <span className="seller">너가 먹던 간식</span>
-                            </h3>
-                            <ul>
-                                <li>
-                                    <p className="">상품 한 줄 설명</p>
-                                    <pre>{data.itemOneContent}</pre>
-                                </li>
-                                <li>
-                                    <p className="">이런 물품과 교환하고 싶어요</p>
-                                    <pre>{data.tradingItem}</pre>
-                                </li>
-                                <li>
-                                    <p className="">여기서 교환하고 싶어요 </p>
-                                    <pre>{data.tradingPosition}</pre>
-                                </li>
-                            </ul>
-                            <div className="btn-box">
-                                <Button.Primary $width={'240px'} $center={'center'}>
-                                    채팅하기
-                                </Button.Primary>
-                                <Button.Secondary
-                                    $width={'240px'}
-                                    $center={'center'}
-                                    onClick={() => nav(`/productdetail/${data.id}/update`)}
-                                >
-                                    수정하기
-                                </Button.Secondary>
+    try {
+        return (
+            <>
+                {data && (
+                    <>
+                        <ProductInfo name="product_reg_form" encType="multipart/form-data">
+                            <ImgBox>
+                                <ProductThumbnail>
+                                    <img src={data.img} alt={'img'} />
+                                </ProductThumbnail>
+                                <ProductImgs>
+                                    {data.imgList ? (
+                                        data.imgList.map((img, idx) => {
+                                            return <img key={idx} src={img} alt="img" />;
+                                        })
+                                    ) : (
+                                        <img src="/img/img0.jpg" alt="img" />
+                                    )}
+                                </ProductImgs>
+                            </ImgBox>
+                            <div className="core">
+                                <h3>
+                                    {data.itemName} <span className="seller">너가 먹던 간식</span>
+                                </h3>
+                                <ul>
+                                    <li>
+                                        <p className="">상품 한 줄 설명</p>
+                                        <pre>{data.itemOneContent}</pre>
+                                    </li>
+                                    <li>
+                                        <p className="">이런 물품과 교환하고 싶어요</p>
+                                        <pre>{data.tradingItem}</pre>
+                                    </li>
+                                    <li>
+                                        <p className="">여기서 교환하고 싶어요 </p>
+                                        <pre>{data.tradingPosition}</pre>
+                                    </li>
+                                </ul>
+                                <div className="btn-box">
+                                    <Button.Primary
+                                        $width={'240px'}
+                                        $center={'center'}
+                                        onClick={() => btnDeleteEvent(data.id)}
+                                    >
+                                        삭제하기
+                                    </Button.Primary>
+                                    <Button.Secondary
+                                        $width={'240px'}
+                                        $center={'center'}
+                                        onClick={() => nav(`/productdetail/${data.id}/update`)}
+                                    >
+                                        수정하기
+                                    </Button.Secondary>
+                                </div>
                             </div>
-                        </div>
-                        <div className="sub">
-                            <p className="">상세 내용</p>
-                            <pre>{data.itemContent}</pre>
-                        </div>
-                    </ProductInfo>
-                </>
-            )}
-        </>
-    );
+                            <div className="sub">
+                                <p className="">상세 내용</p>
+                                <pre>{data.itemContent}</pre>
+                            </div>
+                        </ProductInfo>
+                    </>
+                )}
+            </>
+        );
+    } catch (error) {
+        nav('/');
+    }
 };
 
 export default ProductDetail;

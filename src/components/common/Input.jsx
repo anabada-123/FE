@@ -1,9 +1,22 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import { BLUE_COLOR, YELLOW_COLOR } from '../../assets/colors';
+import { PINK_COLOR, YELLOW_COLOR } from '../../assets/colors';
 const InputBox = styled.div`
     width: ${(props) => props.$width || `100%`};
     text-align: start;
+    position: relative;
+    .coreValue {
+        /* position: absolute; */
+        color: ${PINK_COLOR[0]};
+        font-size: 0.9rem;
+        margin-left: 4px;
+    }
+    .fileCoreValue {
+        position: absolute;
+        top: 50%;
+        right: 12px;
+        transform: translate(0, -50%);
+    }
 `;
 
 const InputSt = styled.input`
@@ -79,10 +92,11 @@ const InputFileSt = styled.input.attrs({ type: 'file' })`
     clip: rect(0, 0, 0, 0);
 `;
 
-const Input = ({ label, $width, ...restProps }) => {
+const Input = ({ label, $width, $coreValue, ...restProps }) => {
     return (
         <InputBox $width={$width}>
             {label ? <label>{label}</label> : null}
+            {$coreValue ? <span className="coreValue">* 필수 입력란 입니다</span> : null}
             <InputSt {...restProps} $label={label} />
         </InputBox>
     );
@@ -92,7 +106,7 @@ const InputFileWrap = ({ children }) => {
     return <InputFileWrapSt>{children}</InputFileWrapSt>;
 };
 
-export const InputFile = ({ label, $width, $idName, $value, ...restProps }) => {
+export const InputFile = ({ label, $width, $idName, $value, $coreValue, ...restProps }) => {
     return (
         <InputBox $width={$width}>
             <InputFileWrap>
@@ -100,6 +114,9 @@ export const InputFile = ({ label, $width, $idName, $value, ...restProps }) => {
                     <label htmlFor={$idName} className="label">
                         {label}
                     </label>
+                ) : null}
+                {$coreValue ? (
+                    <span className="coreValue fileCoreValue">* 필수 입력란 입니다</span>
                 ) : null}
                 <InputFake type="text" value={$value} readOnly />
             </InputFileWrap>

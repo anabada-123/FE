@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ProductList } from '../components/ProductList';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import { getTradingItems } from '../api/tradingItems';
 import { AiFillCaretLeft, AiFillCaretRight } from 'react-icons/ai';
 const PageNum = styled.div`
@@ -10,8 +10,8 @@ const PageNum = styled.div`
     display: flex;
     justify-content: center;
     button {
-        width: 24px;
-        height: 24px;
+        width: 28px;
+        height: 28px;
         /* background-color: none; */
         /* border:none */
 
@@ -21,7 +21,6 @@ const PageNum = styled.div`
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 4px 3px 1px;
         border: 1px solid #333;
         border-top: 2px solid #333;
         border-bottom: 2px solid #333;
@@ -33,14 +32,12 @@ const PageNum = styled.div`
         /* line-height: none; */
         &:first-child {
             width: 40px;
-            padding: 3px 3px 2px;
             border-left: 2px solid #333;
             border-radius: 10px 0 0 10px;
             background-color: #ffe8ad;
         }
         &:last-child {
             width: 40px;
-            padding: 3px 3px 2px;
             border-right: 2px solid #333;
             border-radius: 0 10px 10px 0;
             background-color: #ffe8ad;
@@ -63,22 +60,21 @@ const MainpageContainer = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [responseData, setResponseData] = useState([]);
     const [responsePage, setResponsePage] = useState([]);
-    const { data } = useQuery('items', () => getTradingItems(currentPage));
+    const { data, refetch } = useQuery('items', () => getTradingItems(currentPage));
 
-    // console.log(currentPage);
     useEffect(() => {
         if (data) {
             setResponseData(data.items);
             setResponsePage(data.pageSize);
         }
     }, [data, currentPage]);
-    const totalPages = responsePage; // 전체 페이지 수
+    // const totalPages = responsePage; // 전체 페이지 수
+    const totalPages = responsePage;
     const maxButtons = 5; // 표시할 버튼의 최대 개수
-    // console.log(responseData);
-    // console.log(responsePage);
 
-    const handleClick = (page) => {
-        setCurrentPage(page);
+    const handleClick = async (page) => {
+        await setCurrentPage(page);
+        refetch();
     };
 
     const renderPageButtons = () => {
@@ -103,7 +99,7 @@ const MainpageContainer = () => {
 
     return (
         <>
-            {responseData ? <ProductList data={responseData} /> : null}
+            {data ? <ProductList data={responseData} /> : null}
             <PageNum>
                 <button onClick={() => handleClick(currentPage - 1)}>
                     <AiFillCaretLeft />

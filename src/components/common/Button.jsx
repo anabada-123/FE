@@ -1,6 +1,6 @@
 import React from 'react';
 import { styled } from 'styled-components';
-import { blueColor } from '../../assets/colors';
+import { blueColor, BLUE_COLOR } from '../../assets/colors';
 // ----- Button styled-conponent props guide-----
 // $width : 버튼의 가로 사이즈
 // $center : justify-content 속성 값
@@ -19,7 +19,7 @@ const ButtonStyle = styled.button`
     /* height: 40px; */
     padding: ${(props) => props.$padding || `14px 20px;`};
     margin: 8px;
-    background-color: ${(props) => props.$bc || blueColor[1]};
+    background-color: ${(props) => props.$bc || BLUE_COLOR.Lavender};
     border-radius: 25px;
     color: ${(props) => props.$font_color || `#fff`};
     border: ${(props) => props.$border || `2px solid #333`};
@@ -28,7 +28,7 @@ const ButtonStyle = styled.button`
     align-items: center;
     white-space: nowrap;
     gap: 20px;
-    font-size: ${(props) => props.$font_size || '14px'};
+    font-size: ${(props) => props.$font_size || '1.1rem'};
     font-weight: 700;
     box-shadow: 0 5px 0 #333;
     transform: translateY(-5px);

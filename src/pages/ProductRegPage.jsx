@@ -3,12 +3,10 @@ import styled from 'styled-components';
 import ProductRegContainer from '../container/ProductRegContainer';
 import { BLUE_COLOR, PINK_COLOR, MONO_COLOR, YELLOW_COLOR } from '../assets/colors';
 const ProductRegPageSt = styled.div`
-    margin: 30px 0 60px;
+    padding: 30px 0 60px;
     display: flex;
     justify-content: center;
-    /* border: 2px solid #333; */
     border-radius: 20px;
-    /* box-shadow: 0 5px 0 #333; */
     overflow: hidden;
 `;
 
