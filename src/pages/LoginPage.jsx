@@ -5,7 +5,7 @@ import Button from '../components/common/Button/Button';
 import useInput from '../hooks/useInput';
 import { Link } from 'react-router-dom';
 import { login } from '../api/auth';
-import { useQuery, useMutation, useQueryClient } from 'react-query';
+import { useMutation } from 'react-query';
 import { PINK_COLOR, YELLOW_COLOR } from '../assets/colors';
 const LoginPageSt = styled.div`
     position: fixed;
@@ -73,19 +73,24 @@ const LoginPage = () => {
     const [password, setPassword, passwordHandler] = useInput();
 
     // const loginSearch = useQuery('items', () => login(userID, password));
-    const queryClient = useQueryClient();
-    const mutation = useMutation((userLoginInfo) => login(userLoginInfo), {
-        onSuccess: () => {
-            queryClient.invalidateQueries('tradingItem');
-        },
-    });
+    const mutation = useMutation((userLoginInfo) => login(userLoginInfo));
 
     const LoginOnSubmitHandler = async (e) => {
         e.preventDefault();
         const userLoginInfo = {
-            id: userID,
-            password,
+            userid: userID,
+            userpw: password,
         };
+
+        const formData = new FormData();
+
+        formData.append(
+            'item',
+            new Blob([JSON.stringify(userLoginInfo)], {
+                type: 'application/json',
+            })
+        );
+
         await mutation.mutateAsync(userLoginInfo);
     };
     return (
@@ -104,6 +109,7 @@ const LoginPage = () => {
                         <Input
                             label={'비밀번호'}
                             value={password}
+                            type={'password'}
                             onChange={passwordHandler}
                             placeholder="비밀번호"
                         />
