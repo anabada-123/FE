@@ -5,8 +5,8 @@ import Input, { InputFile } from '../components/common/Input';
 import Textarea from '../components/common/Textarea';
 import Button from '../components/common/Button/Button';
 import ToggleButton from '../components/common/Button/ToggleButton';
-import { useQueryClient, useMutation } from 'react-query';
-import { updateTradingItem } from '../api/tradingItem';
+import { useQuery, useQueryClient, useMutation } from 'react-query';
+import { updateTradingItem, getTradingItem } from '../api/tradingItem';
 import {
     ImgBox,
     ProductThumbnail,
@@ -37,62 +37,64 @@ const ProductUpdateContainer = () => {
     const imgRef = useRef();
     const multipleImgRef = useRef();
 
+    const [existingImgListName, setExistingImgListName] = useState([]);
+
     const { id } = useParams();
     const nav = useNavigate();
-    const { isLoading, error, item } = useSelector((state) => {
-        return state.item;
-    });
-    // const base64data = async (item) => {
-    //     try {
-    //         // 이미지 다운로드
-    //         const response = await fetch(item);
-    //         const imageBlob = await response.blob();
+    // const { isLoading, error, item } = useSelector((state) => {
+    //     return state.item;
+    // });
 
-    //         // Base64 인코딩
-    //         const reader = new FileReader();
-    //         reader.readAsDataURL(imageBlob);
-    //         reader.onloadend = () => {
-    //             imgRef.current = reader.result; // Base64 데이터를 상태로 저장
-    //         };
-    //     } catch (error) {
-    //         console.error('Error:', error);
-    //     }
-    // };
+    const { data } = useQuery('tradingItem', () => getTradingItem(id), {
+        onSuccess: (data) => {},
+    });
+
+    const imgListNameExtraction = (imgList) => {
+        let imgListName = [];
+        // imgListName.push(mainImg.split('/').pop());
+        imgList.forEach((item) => {
+            imgListName.push(item.split('/').pop());
+        });
+        setImgName(imgListName[0]);
+        setExistingImgListName(imgListName);
+        setMultipleImgName(imgListName);
+    };
 
     useEffect(() => {
-        if (item) {
-            setTitle(item.itemName);
-            setProductOneDesc(item.itemOneContent);
-            setProductDesc(item.itemContent);
-            setTradeItem(item.tradingItem);
-            setLocation(item.tradingPosition);
-            setImage(item.img);
-            setMultipleImage(item.imgList);
-            setIsSale(item.check);
-            imgRef.current = item.img;
-            multipleImgRef.current = item.imgList;
-            // console.log(item.check);
-            // base64data(item.img);
+        if (data) {
+            setTitle(data.itemName);
+            setProductOneDesc(data.itemOneContent);
+            setProductDesc(data.itemContent);
+            setTradeItem(data.tradingItem);
+            setLocation(data.tradingPosition);
+            setImage(data.img);
+            setMultipleImage(data.imgList);
+            // setIsSale(item.check);
+            imgListNameExtraction(data.imgList);
+            // console.log(data.itemName);
+            // console.log(title);
         }
+
         // }
     }, []);
-
     //이미지 업로드 시 미리보기
-    const ImageChangehandler = (event) => {
-        const file = event.target.files[0];
-        const { name } = file;
-        setImgName(name);
-        imgRef.current = file;
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onloadend = () => {
-            setImage(reader.result);
-        };
-    };
+    // const ImageChangehandler = (event) => {
+    //     const file = event.target.files[0];
+    //     const { name } = file;
+    //     setImgName(name);
+    //     // imgRef.current = file;
+    //     const reader = new FileReader();
+    //     reader.readAsDataURL(file);
+    //     reader.onloadend = () => {
+    //         setImage(reader.result);
+    //     };
+    // };
 
     const MultipleImageHander = (event) => {
         const files = event.target.files;
         const selectedFiles = Array.from(files);
+        const fileReaders = [];
+        const fileNames = [];
 
         if (selectedFiles.length > 4) {
             return alert('이미지는 최대 4장 등록할 수 있습니다.');
@@ -100,13 +102,10 @@ const ProductUpdateContainer = () => {
 
         multipleImgRef.current = selectedFiles;
 
-        const fileReaders = [];
-        const fileNames = [];
-
         // 첫 번째 이미지는 단일 이미지 미리보기로 유지
         if (selectedFiles.length > 0) {
             const firstFile = selectedFiles[0];
-            imgRef.current = firstFile;
+            // imgRef.current = firstFile;
             const firstReader = new FileReader();
             firstReader.readAsDataURL(firstFile);
             firstReader.onloadend = () => {
@@ -123,8 +122,9 @@ const ProductUpdateContainer = () => {
                 fileReaders.push(imageDataURL);
                 fileNames.push(file.name);
                 if (fileReaders.length === selectedFiles.length) {
-                    setMultipleImage(fileReaders);
-                    setMultipleImgName(fileNames);
+                    // const imgList = [];
+                    setMultipleImage((prevImgList) => [...prevImgList, ...fileReaders]);
+                    setMultipleImgName((prevImgName) => [...prevImgName, ...fileNames]);
                 }
             };
         });
@@ -133,7 +133,7 @@ const ProductUpdateContainer = () => {
     const onClickImageHandler = (imageDataURL, idx) => {
         setImage(imageDataURL);
         setImgName(multipleImgName[idx]);
-        imgRef.current = multipleImgRef.current[idx];
+        // imgRef.current = multipleImgRef.current[idx];
     };
     // 트레이드 아이템 등록
     const queryClient = useQueryClient();
@@ -145,7 +145,7 @@ const ProductUpdateContainer = () => {
 
     const ProductRegSubmitHandler = async (e) => {
         e.preventDefault();
-        const img = imgRef.current;
+        // const img = imgRef.current;
         const multipleImg = multipleImgRef.current;
         const items = {
             itemName: title,
@@ -155,9 +155,22 @@ const ProductUpdateContainer = () => {
             tradingPosition: location,
             cate: cate,
             status: '판매완료',
-            check: isSale,
+            mainImgName: imgName,
+            // imgNameList: multipleImgName,
+            // check: isSale,
         };
         const formData = new FormData();
+
+        if (!multipleImg) {
+            items.imgNameList = existingImgListName;
+        } else {
+            items.imgNameList = existingImgListName;
+            multipleImg.forEach((file) => {
+                formData.append(`img`, file);
+            });
+        }
+
+        console.log(items);
 
         formData.append(
             'item',
@@ -166,17 +179,14 @@ const ProductUpdateContainer = () => {
             })
         );
 
-        formData.append('mainImg', img);
-        multipleImg &&
-            multipleImg.forEach((file) => {
-                formData.append(`img`, file);
-            });
+        // formData.append('mainImg', img);
+
         await mutation.mutateAsync(formData);
 
         // formData 콘솔 확인하기
-        // for (let value of formData.values()) {
-        //     console.log(value);
-        // }
+        for (let value of formData.values()) {
+            console.log(value);
+        }
         setTitle('');
         setProductOneDesc('');
         setProductDesc('');
@@ -189,9 +199,8 @@ const ProductUpdateContainer = () => {
     const onClickIsSale = (e) => {
         e.preventDefault();
         setIsSale(!isSale);
-        console.log(isSale);
     };
-
+    // console.log(multipleImgName);
     return (
         <ProductForm
             onSubmit={ProductRegSubmitHandler}
@@ -200,7 +209,7 @@ const ProductUpdateContainer = () => {
         >
             <ImgBox>
                 <ProductThumbnail>
-                    <span className="preview-img-title">이미지 미리보기</span>
+                    <span className="preview-img-title">대표이미지</span>
                     {image ? (
                         <img src={image} alt="thumbnail_image" />
                     ) : (
@@ -238,17 +247,18 @@ const ProductUpdateContainer = () => {
                     $idName={'info-imgs'}
                     $value={multipleImgName.join(',')}
                     onChange={MultipleImageHander}
-                    $coreValue={imgRef.current ? false : true}
+                    $coreValue={multipleImgName ? false : true}
                     multiple
                 />
                 <InputFile
                     label={'대표이미지'}
                     accept="image/*"
-                    $idName={'info-img'}
+                    // $idName={'info-img'}
                     $value={imgName}
-                    onChange={ImageChangehandler}
+                    $functionActive={'none-active'}
+                    // onChange={ImageChangehandler}
                 />
-                <Input
+                <Textarea
                     label={'제목'}
                     type={'text'}
                     value={title}
