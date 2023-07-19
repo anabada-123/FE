@@ -21,6 +21,9 @@ const ProductCreateContainer = () => {
 
     //이미지
     // const [image, setImage] = useState(null);
+    // const [imgName, setImgName] = useState('');
+    // const [imgFile, setImgFile] = useState('');
+    // const [image, setImage] = useState(null);
     const [multipleImage, setMultipleImage] = useState('');
     // const [imgName, setImgName] = useState('');
     const [multipleImgName, setMultipleImgName] = useState([]);
@@ -28,21 +31,25 @@ const ProductCreateContainer = () => {
     const multipleImgRef = useRef();
 
     const nav = useNavigate();
-
+    const fileReaders = [];
+    const fileNames = [];
     //이미지 업로드 시 미리보기
 
     const { image, setImage, imgName, setImgName, imgRef, MainImagehandler } = useImageHandler();
 
-    //대표 이미지 지정
+    // 대표 이미지 지정
     // const MainImagehandler = (event) => {
     //     const file = event.target.files[0];
     //     const { name } = file;
     //     setImgName(name);
     //     imgRef.current = file;
+    //     // fileReaders.push(file);
+    //     // fileNames.push(name);
     //     const reader = new FileReader();
     //     reader.readAsDataURL(file);
     //     reader.onloadend = () => {
     //         setImage(reader.result);
+    //         // setMultipleImage([reader.result]);
     //     };
     // };
 
@@ -63,7 +70,7 @@ const ProductCreateContainer = () => {
         // 첫 번째 이미지는 단일 이미지 미리보기로 유지
         if (selectedFiles.length > 0) {
             const firstFile = selectedFiles[0];
-            imgRef.current = firstFile;
+            // imgRef.current = firstFile;
             const firstReader = new FileReader();
             firstReader.readAsDataURL(firstFile);
             firstReader.onloadend = () => {
@@ -91,7 +98,7 @@ const ProductCreateContainer = () => {
     const onClickImageHandler = (imageDataURL, idx) => {
         setImage(imageDataURL);
         setImgName(multipleImgName[idx]);
-        imgRef.current = multipleImgRef.current[idx];
+        // imgRef.current = multipleImgRef.current[idx];
     };
     // console.log(multipleImgName);
     // 트레이드 아이템 등록
@@ -105,7 +112,7 @@ const ProductCreateContainer = () => {
 
     const ProductRegSubmitHandler = async (e) => {
         e.preventDefault();
-        const img = imgRef.current;
+
         const multipleImg = multipleImgRef.current;
 
         let emptyFields = [];
@@ -128,7 +135,7 @@ const ProductCreateContainer = () => {
         if (!productDesc) {
             emptyFields.push('상세내용');
         }
-        if (!img) {
+        if (!multipleImage) {
             emptyFields.push('이미지');
         }
 
@@ -143,6 +150,7 @@ const ProductCreateContainer = () => {
             tradingItem: tradeItem,
             tradingPosition: location,
             cate: cate,
+            mainImgName: imgName,
         };
 
         const formData = new FormData();
@@ -154,12 +162,11 @@ const ProductCreateContainer = () => {
             })
         );
 
-        formData.append('mainImg', img);
         multipleImg &&
             multipleImg.forEach((file) => {
                 formData.append(`img`, file);
             });
-
+        console.log(items);
         for (let value of formData.values()) {
             console.log(value);
         }
@@ -183,7 +190,7 @@ const ProductCreateContainer = () => {
                 onClickImageHandler={onClickImageHandler}
                 multipleImgName={multipleImgName}
                 MultipleImageHander={MultipleImageHander}
-                imgRef={imgRef}
+                // imgRef={imgRef}
                 imgName={imgName}
                 MainImagehandler={MainImagehandler}
                 title={title}

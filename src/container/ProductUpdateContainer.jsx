@@ -49,13 +49,13 @@ const ProductUpdateContainer = () => {
         onSuccess: (data) => {},
     });
 
-    const imgListNameExtraction = (imgList) => {
+    const imgListNameExtraction = (imgList, mainImg) => {
         let imgListName = [];
-        // imgListName.push(mainImg.split('/').pop());
+        const mainimgName = mainImg.split('/').pop();
         imgList.forEach((item) => {
             imgListName.push(item.split('/').pop());
         });
-        setImgName(imgListName[0]);
+        setImgName(mainimgName);
         setExistingImgListName(imgListName);
         setMultipleImgName(imgListName);
     };
@@ -70,7 +70,7 @@ const ProductUpdateContainer = () => {
             setImage(data.img);
             setMultipleImage(data.imgList);
             // setIsSale(item.check);
-            imgListNameExtraction(data.imgList);
+            imgListNameExtraction(data.imgList, data.img);
             // console.log(data.itemName);
             // console.log(title);
         }
@@ -93,10 +93,12 @@ const ProductUpdateContainer = () => {
     const MultipleImageHander = (event) => {
         const files = event.target.files;
         const selectedFiles = Array.from(files);
+        const currentFilesNum = multipleImgName.length + selectedFiles.length;
         const fileReaders = [];
         const fileNames = [];
+        console.log(currentFilesNum);
 
-        if (selectedFiles.length > 4) {
+        if (currentFilesNum > 4) {
             return alert('이미지는 최대 4장 등록할 수 있습니다.');
         }
 
