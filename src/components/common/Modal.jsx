@@ -72,4 +72,23 @@ const Modal = ({ children, isOpen, handleClose, subText }) => {
     );
 };
 
+export const IntentCheckModel = ({ children, isOpen, handleClose, subText, onClickEvent }) => {
+    return (
+        <>
+            {isOpen && (
+                <ModalBack>
+                    <ModalStyle>
+                        <div className="modal-text-box">
+                            <ModalTitle>{children}</ModalTitle>
+                            {subText && <p className="modal-content">{subText}</p>}
+                        </div>
+                        <Button.Primary onClick={handleClose}>취소</Button.Primary>
+                        <Button.Secondary onClick={onClickEvent}>확인</Button.Secondary>
+                    </ModalStyle>
+                </ModalBack>
+            )}
+        </>
+    );
+};
+
 export default Modal;

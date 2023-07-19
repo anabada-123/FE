@@ -19,6 +19,7 @@ const getTradingItems = async (currentPage) => {
 const deleteTradingItems = async (id) => {
     try {
         await axios.delete(`${process.env.REACT_APP_SERVER_URL}/items/${id}`);
+        alert('상품 삭제 성공했습니다.');
     } catch (error) {
         alert('상품 삭제 실패했습니다.');
     }

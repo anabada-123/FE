@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import Input from '../components/common/Input';
 import Button from '../components/common/Button/Button';
 import useInput from '../hooks/useInput';
 import { Link } from 'react-router-dom';
 import { login } from '../api/auth';
 import { useMutation } from 'react-query';
-import { PINK_COLOR, YELLOW_COLOR } from '../assets/colors';
+import { PINK_COLOR, YELLOW_COLOR, MONO_COLOR } from '../assets/colors';
+import Modal from '../components/common/Modal';
+import { test } from '../api/auth';
 const LoginPageSt = styled.div`
-    position: fixed;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100vh;
     /* padding: 0 100px; */
@@ -19,10 +18,16 @@ const LoginPageSt = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    @media screen and (max-width: 768px) {
+        flex-direction: column;
+    }
     .welcome {
         width: 50%;
         height: 100%;
         /* background-color: aqua; */
+        @media screen and (max-width: 768px) {
+            display: none;
+        }
     }
     .login-box {
         width: 50%;
@@ -49,6 +54,7 @@ const LoginForm = styled.form`
     border: 2px solid #333;
     box-shadow: 0 8px 0 #333;
     border-radius: 15px;
+
     h2 {
         font-size: 2rem;
         margin-bottom: 50px;
@@ -63,17 +69,46 @@ const LoginForm = styled.form`
     button {
         margin-bottom: 20px;
     }
-    .go-signup:hover {
-        color: ${PINK_COLOR[0]};
+    .go-signup {
+        font-size: 1rem;
+        font-weight: bold;
+        padding: 12px 18px;
+        margin-bottom: 20px;
+        border: 2px solid ${YELLOW_COLOR[1]};
+        border-radius: 10px;
+        opacity: 0.6;
+        cursor: pointer;
+        &:hover {
+            border: 2px solid ${MONO_COLOR[1]};
+        }
+        &:active {
+            opacity: 1;
+            background-color: ${YELLOW_COLOR[0]};
+        }
+    }
+    @media screen and (max-width: 768px) {
+        width: 80%;
+        .input-box {
+            width: 80%;
+        }
     }
 `;
 
 const LoginPage = () => {
+    const [isOpen, setIsOpen] = useState(false);
+    const [massage, setMassage] = useState('');
+    const openModal = () => {
+        setIsOpen(true);
+    };
+    const handleClose = () => {
+        setIsOpen(false);
+    };
     const [userID, setUserID, userIDHandler] = useInput();
     const [password, setPassword, passwordHandler] = useInput();
 
     // const loginSearch = useQuery('items', () => login(userID, password));
     const mutation = useMutation((userLoginInfo) => login(userLoginInfo));
+    // const mutation = useMutation(test);
 
     const LoginOnSubmitHandler = async (e) => {
         e.preventDefault();
@@ -81,48 +116,44 @@ const LoginPage = () => {
             userid: userID,
             userpw: password,
         };
-
-        const formData = new FormData();
-
-        formData.append(
-            'item',
-            new Blob([JSON.stringify(userLoginInfo)], {
-                type: 'application/json',
-            })
-        );
-
+        // const json = JSON.parse(userLoginInfo);
         await mutation.mutateAsync(userLoginInfo);
     };
     return (
-        <LoginPageSt>
-            <div className="welcome"></div>
-            <div className="login-box">
-                <LoginForm onSubmit={LoginOnSubmitHandler}>
-                    <h2>로그인</h2>
-                    <div className="input-box">
-                        <Input
-                            label={'아이디'}
-                            value={userID}
-                            onChange={userIDHandler}
-                            placeholder="아이디"
-                        />
-                        <Input
-                            label={'비밀번호'}
-                            value={password}
-                            type={'password'}
-                            onChange={passwordHandler}
-                            placeholder="비밀번호"
-                        />
-                    </div>
-                    <Button.Primary $width={'120px'} $center={'center'}>
-                        로그인
-                    </Button.Primary>
-                    <Link to="/signup">
-                        <span className="go-signup">회원이 아니신가요?</span>
-                    </Link>
-                </LoginForm>
-            </div>
-        </LoginPageSt>
+        <>
+            <LoginPageSt>
+                <div className="welcome"></div>
+                <div className="login-box">
+                    <LoginForm onSubmit={LoginOnSubmitHandler}>
+                        <h2>로그인</h2>
+                        <div className="input-box">
+                            <Input
+                                label={'아이디'}
+                                value={userID}
+                                onChange={userIDHandler}
+                                placeholder="아이디"
+                            />
+                            <Input
+                                label={'비밀번호'}
+                                value={password}
+                                type={'password'}
+                                onChange={passwordHandler}
+                                placeholder="비밀번호"
+                            />
+                        </div>
+                        <Button.Primary $width={'120px'} $center={'center'}>
+                            로그인
+                        </Button.Primary>
+                        <Link to="/signup" className="go-signup">
+                            회원이 아니신가요?
+                        </Link>
+                    </LoginForm>
+                </div>
+            </LoginPageSt>
+            <Modal isOpen={isOpen} handleClose={handleClose}>
+                {massage && massage}
+            </Modal>
+        </>
     );
 };
 

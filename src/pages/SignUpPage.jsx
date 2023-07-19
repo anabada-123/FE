@@ -4,7 +4,7 @@ import Input from '../components/common/Input';
 import Button from '../components/common/Button/Button';
 import useInput from '../hooks/useInput';
 import Modal from '../components/common/Modal';
-import { YELLOW_COLOR, PINK_COLOR, BLUE_COLOR } from '../assets/colors';
+import { YELLOW_COLOR, PINK_COLOR, BLUE_COLOR, MONO_COLOR } from '../assets/colors';
 import { useMutation, useQueryClient } from 'react-query';
 import {
     signUp,
@@ -22,21 +22,43 @@ const SignUpPageStyle = styled.div`
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    h2 {
+    .welcome-join {
         width: 100%;
         height: 200px;
-        font-size: 40px;
+        /* font-size: 40px; */
         padding: 50px 0 0;
-        margin-bottom: 50px;
+        margin-bottom: 20px;
         text-align: center;
-        position: absolute;
+        /* position: absolute; */
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
-        top: 0;
+        /* top: 0; */
         border-bottom: 5px solid #333;
         border-radius: 15px;
         z-index: 1;
+        background-color: ${YELLOW_COLOR[1]};
+        h2 {
+            font-size: 3rem;
+        }
+    }
+    .go-login {
+        font-size: 1rem;
+        font-weight: bold;
+        padding: 15px 30px;
+        margin-bottom: 20px;
+        border: 2px solid ${YELLOW_COLOR[1]};
+        border-radius: 10px;
+        opacity: 0.6;
+        cursor: pointer;
+        &:hover {
+            border: 2px solid ${MONO_COLOR[1]};
+        }
+        &:active {
+            opacity: 1;
+            background-color: ${YELLOW_COLOR[0]};
+        }
     }
 `;
 
@@ -54,6 +76,7 @@ const SignUpForm = styled.form`
     flex-direction: column;
     align-items: center;
     gap: 40px;
+
     & > div {
         width: 100%;
     }
@@ -62,10 +85,13 @@ const SignUpForm = styled.form`
     }
     & > button {
         margin: 40px 0 20px;
+        width: 100%;
     }
-    .go-login:hover {
-        color: ${PINK_COLOR[0]};
-    }
+    /* .go-login {
+        position: absolute;
+        z-index: 999;
+    } */
+
     .pw-check-box {
         position: relative;
     }
@@ -75,6 +101,14 @@ const SignUpForm = styled.form`
         top: 0;
         right: 12px;
         font-size: 0.9rem;
+    }
+    @media screen and (max-width: 768px) {
+        width: 90%;
+        padding: 50px 30px;
+        gap: 60px;
+        & > button {
+            width: 80%;
+        }
     }
 `;
 
@@ -86,6 +120,7 @@ const CheckBox = styled.div`
     align-items: flex-end;
     /* margin-top: 30px; */
     position: relative;
+
     .coreValue {
         position: absolute;
         top: 0;
@@ -93,23 +128,33 @@ const CheckBox = styled.div`
         font-size: 0.9rem;
         color: ${PINK_COLOR[0]};
     }
-
     button {
         margin: 0;
         margin-left: 20px;
         margin-bottom: 30px;
     }
-    span {
+    @media screen and (max-width: 768px) {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 50px;
+        button {
+            width: 80%;
+            margin-left: 0;
+        }
+    }
+    /* span {
         position: absolute;
         color: ${BLUE_COLOR.Turkish};
-    }
+    } */
 `;
 const BackGroundFixed = styled.div`
-    position: fixed;
+    /* position: absolute;
     top: 0;
-    left: 0;
+    left: 0; */
     width: 100%;
-    height: 100%;
+    padding-bottom: 100px;
+    /* height: 100%; */
     background-color: ${YELLOW_COLOR[1]};
 `;
 const SignUpPage = () => {
@@ -266,138 +311,140 @@ const SignUpPage = () => {
 
     return (
         <>
-            <BackGroundFixed></BackGroundFixed>
-            <SignUpPageStyle onSubmit={SignUpOnSubmitHandler}>
-                <h2>만나서 반가워요~!</h2>
-                <SignUpForm>
-                    <div className="core-info">
-                        <div className="userId-wrap">
-                            <CheckBox>
+            <BackGroundFixed>
+                <SignUpPageStyle onSubmit={SignUpOnSubmitHandler}>
+                    <div className="welcome-join">
+                        <h2>만나서 반가워요~!</h2>
+                    </div>
+                    <Link to="/login" className="go-login">
+                        이미 회원이신가요?
+                    </Link>
+                    <SignUpForm>
+                        <div className="core-info">
+                            <div className="userId-wrap">
+                                <CheckBox>
+                                    <Input
+                                        label={'아이디'}
+                                        value={userId}
+                                        placeholder="아이디을 입력해주세요"
+                                        onChange={onChangeUserIDHandler}
+                                        $coreValue={userId ? false : true}
+                                        readOnly={userIdCheck}
+                                    />
+                                    {/* <span className="coreValue">* 중복체크 해주세요</span> */}
+                                    <Button.Secondary
+                                        $width={'120px'}
+                                        $center={'center'}
+                                        onClick={onClickIDCheckHandler}
+                                    >
+                                        중복 확인
+                                    </Button.Secondary>
+                                </CheckBox>
+                            </div>
+                            <div className="password-wrap">
                                 <Input
-                                    label={'아이디'}
-                                    value={userId}
-                                    placeholder="아이디을 입력해주세요"
-                                    onChange={onChangeUserIDHandler}
-                                    $coreValue={userId ? false : true}
-                                    readOnly={userIdCheck}
-                                />
-                                {/* <span className="coreValue">* 중복체크 해주세요</span> */}
-                                <Button.Secondary
-                                    $width={'120px'}
-                                    $center={'center'}
-                                    onClick={onClickIDCheckHandler}
-                                >
-                                    중복 확인
-                                </Button.Secondary>
-                            </CheckBox>
-                        </div>
-                        <div className="password-wrap">
-                            <Input
-                                label={'비밀번호'}
-                                value={userpw}
-                                type={'password'}
-                                placeholder="비밀번호을 입력해주세요"
-                                onChange={onChangeUserpwHandler}
-                                $coreValue={userpw ? false : true}
-                            />
-                            <div className="pw-check-box">
-                                <Input
-                                    label={'비밀번호 확인'}
+                                    label={'비밀번호'}
+                                    value={userpw}
                                     type={'password'}
-                                    value={passwordCheck}
-                                    placeholder="입력한 비밀번호와 똑같이 입력해주세요"
-                                    onChange={onChangepasswordCheckHandler}
+                                    placeholder="비밀번호을 입력해주세요"
+                                    onChange={onChangeUserpwHandler}
+                                    $coreValue={userpw ? false : true}
                                 />
-                                {userpw !== passwordCheck && passwordCheck ? (
-                                    <span className="pw-check-masseg">
-                                        * 비밀번호와 동일하지 않습니다
-                                    </span>
-                                ) : null}
+                                <div className="pw-check-box">
+                                    <Input
+                                        label={'비밀번호 확인'}
+                                        type={'password'}
+                                        value={passwordCheck}
+                                        placeholder="입력한 비밀번호와 똑같이 입력해주세요"
+                                        onChange={onChangepasswordCheckHandler}
+                                    />
+                                    {userpw !== passwordCheck && passwordCheck ? (
+                                        <span className="pw-check-masseg">
+                                            * 비밀번호와 동일하지 않습니다
+                                        </span>
+                                    ) : null}
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div className="sub-info">
-                        <div className="nickName-wrap">
-                            <CheckBox>
+                        <div className="sub-info">
+                            <div className="nickName-wrap">
+                                <CheckBox>
+                                    <Input
+                                        label={'닉네임'}
+                                        value={nickName}
+                                        placeholder="닉네임을 입력해주세요"
+                                        onChange={onChangeNickNameHandler}
+                                        $coreValue={nickName ? false : true}
+                                        readOnly={nicknameCheck}
+                                    />
+                                    {/* <span className="coreValue">* 중복체크 해주세요</span> */}
+                                    <Button.Secondary
+                                        $width={'120px'}
+                                        $center={'center'}
+                                        onClick={onClickNickNameCheckHandler}
+                                    >
+                                        중복 확인
+                                    </Button.Secondary>
+                                </CheckBox>
+                            </div>
+                            <div className="email-wrap">
+                                <CheckBox>
+                                    <Input
+                                        label={'이메일'}
+                                        value={email}
+                                        placeholder="example@gmail.com"
+                                        onChange={onChangeEmailHandler}
+                                        $coreValue={email ? false : true}
+                                        readOnly={MailAuthCheck}
+                                    />
+                                    {/* <span className="coreValue">* 중복체크 해주세요</span> */}
+                                    <Button.Secondary
+                                        $width={'120px'}
+                                        $center={'center'}
+                                        onClick={onClickEmailCodeHandler}
+                                    >
+                                        인증 코드
+                                    </Button.Secondary>
+                                </CheckBox>
+                                <CheckBox>
+                                    <Input
+                                        label={'인증코드'}
+                                        value={emailAuthCode}
+                                        placeholder="인증코드을 입력해주세요"
+                                        onChange={onChangeEmailAuthCheckCodeHandler}
+                                        $coreValue={emailAuthCode ? false : true}
+                                        readOnly={MailAuthCheck}
+                                    />
+                                    {/* <span className="coreValue">* 중복체크 해주세요</span> */}
+                                    <Button.Secondary
+                                        $width={'120px'}
+                                        $center={'center'}
+                                        onClick={onChangeEmailAuthCodeCheckHandler}
+                                    >
+                                        인증 확인
+                                    </Button.Secondary>
+                                </CheckBox>
+                            </div>
+                            <div className="phonenumber-wrap">
                                 <Input
-                                    label={'닉네임'}
-                                    value={nickName}
-                                    placeholder="닉네임을 입력해주세요"
-                                    onChange={onChangeNickNameHandler}
-                                    $coreValue={nickName ? false : true}
-                                    readOnly={nicknameCheck}
+                                    label={'전화번호'}
+                                    value={phonenumber}
+                                    placeholder="전화번호를 입력해주세요"
+                                    onChange={onChangePhonenumberHandler}
+                                    $coreValue={phonenumber ? false : true}
                                 />
-                                {/* <span className="coreValue">* 중복체크 해주세요</span> */}
-                                <Button.Secondary
-                                    $width={'120px'}
-                                    $center={'center'}
-                                    onClick={onClickNickNameCheckHandler}
-                                >
-                                    중복 확인
-                                </Button.Secondary>
-                            </CheckBox>
+                            </div>
                         </div>
-                        <div className="email-wrap">
-                            <CheckBox>
-                                <Input
-                                    label={'이메일'}
-                                    value={email}
-                                    placeholder="example@gmail.com"
-                                    onChange={onChangeEmailHandler}
-                                    $coreValue={email ? false : true}
-                                    readOnly={MailAuthCheck}
-                                />
-                                {/* <span className="coreValue">* 중복체크 해주세요</span> */}
-                                <Button.Secondary
-                                    $width={'120px'}
-                                    $center={'center'}
-                                    onClick={onClickEmailCodeHandler}
-                                >
-                                    인증 코드
-                                </Button.Secondary>
-                            </CheckBox>
-                            <CheckBox>
-                                <Input
-                                    label={'인증코드'}
-                                    value={emailAuthCode}
-                                    placeholder="인증코드을 입력해주세요"
-                                    onChange={onChangeEmailAuthCheckCodeHandler}
-                                    $coreValue={emailAuthCode ? false : true}
-                                    readOnly={MailAuthCheck}
-                                />
-                                {/* <span className="coreValue">* 중복체크 해주세요</span> */}
-                                <Button.Secondary
-                                    $width={'120px'}
-                                    $center={'center'}
-                                    onClick={onChangeEmailAuthCodeCheckHandler}
-                                >
-                                    인증 확인
-                                </Button.Secondary>
-                            </CheckBox>
-                        </div>
-                        <div className="phonenumber-wrap">
-                            <Input
-                                label={'전화번호'}
-                                value={phonenumber}
-                                placeholder="전화번호를 입력해주세요"
-                                onChange={onChangePhonenumberHandler}
-                                $coreValue={phonenumber ? false : true}
-                            />
-                        </div>
-                    </div>
-                    <Button.Primary $width={'120px'} $center={'center'}>
-                        회원가입
-                    </Button.Primary>
-
-                    <Link to="/login">
-                        <span className="go-login">이미 회원이신가요?</span>
-                    </Link>
-                </SignUpForm>
-            </SignUpPageStyle>
-            <Modal isOpen={isOpen} handleClose={handleClose}>
-                {massage && massage}
-            </Modal>
+                        <Button.Primary $width={'120px'} $center={'center'}>
+                            회원가입
+                        </Button.Primary>
+                    </SignUpForm>
+                </SignUpPageStyle>
+                <Modal isOpen={isOpen} handleClose={handleClose}>
+                    {massage && massage}
+                </Modal>
+            </BackGroundFixed>
         </>
     );
 };

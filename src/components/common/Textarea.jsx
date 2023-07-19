@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import { PINK_COLOR, BLUE_COLOR } from '../../assets/colors';
 
@@ -43,8 +43,8 @@ const TextareaSt = styled.textarea`
             `;
         }
     }}
-    ${({ $coreValue }) => {
-        if ($coreValue) {
+    ${({ $coreStyle }) => {
+        if ($coreStyle) {
             return css`
                 border: 2px solid ${PINK_COLOR[0]};
                 box-shadow: 0 5px 0 ${PINK_COLOR[0]};
@@ -63,12 +63,27 @@ const TextareaSt = styled.textarea`
     }
 `;
 
-const Textarea = ({ label, $coreValue, ...restProps }) => {
+const Textarea = ({ label, $coreValue, value, ...restProps }) => {
+    const [coreValueClick, setCoreValueClick] = useState(false);
+    const [coreNoneStyle, setCoreNoneStyle] = useState(false);
+    useEffect(() => {
+        if (value === '' && $coreValue === true && coreValueClick === true) {
+            setCoreNoneStyle(true);
+        } else if (value !== '') {
+            setCoreNoneStyle(false);
+        }
+    }, [value, $coreValue, coreValueClick]);
     return (
         <TextareaBox>
             <label htmlFor="">{label}</label>
-            {$coreValue ? <span className="coreValue">* 필수 입력란 입니다</span> : null}
-            <TextareaSt {...restProps} $label={label} $coreValue={$coreValue}></TextareaSt>
+            {coreNoneStyle ? <span className="coreValue">* 필수 입력란 입니다</span> : null}
+            <TextareaSt
+                {...restProps}
+                $label={label}
+                $coreStyle={coreNoneStyle}
+                value={value}
+                onClick={() => setCoreValueClick(true)}
+            ></TextareaSt>
         </TextareaBox>
     );
 };

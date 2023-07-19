@@ -6,9 +6,10 @@ import { BsFillChatFill, BsPersonFill } from 'react-icons/bs';
 import { IoMdLogOut } from 'react-icons/io';
 import { BiAddToQueue } from 'react-icons/bi';
 import { GiCube } from 'react-icons/gi';
-import { BLUE_COLOR } from '../assets/colors';
+import { BLUE_COLOR, blueColor, PINK_COLOR } from '../assets/colors';
 import Input from '../components/common/Input';
 import Button from '../components/common/Button/Button';
+
 const HeaderSt = styled.header`
     width: 100%;
     background-color: #efefef;
@@ -33,11 +34,37 @@ const HeaderSt = styled.header`
             display: flex;
             align-items: center;
         }
+        @media screen and (max-width: 500px) {
+            background-color: ${blueColor[0]};
+            padding: 2px 20px;
+            border-bottom: none;
+            .center > a {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin: 0 auto;
+                svg {
+                    width: 25px;
+                    height: 25px;
+                    margin-right: 4px;
+                    fill: ${PINK_COLOR[2]};
+                }
+            }
+        }
     }
     form {
         width: 50%;
         display: flex;
         align-items: center;
+        @media screen and (max-width: 500px) {
+            width: 100%;
+            border-bottom: 3px solid #333;
+            padding: 10px 20px 6px;
+            button {
+                margin-right: 0;
+            }
+            /* justify-content: space-around; */
+        }
     }
 `;
 const Navbar = styled.nav`
@@ -46,14 +73,27 @@ const Navbar = styled.nav`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    @media screen and (max-width: 500px) {
+        flex-direction: column;
+        padding: 0;
+    }
 `;
 const Logo = styled.div`
     /* width: 50px; */
     /* height: 60px; */
     display: inline-block;
     margin-left: 12px;
-    font-size: 4rem;
+    font-size: 3rem;
     font-weight: bold;
+    @media screen and (max-width: 500px) {
+        width: 100%;
+        font-size: 1rem;
+        margin-left: 0;
+        padding: 10px 0;
+        text-align: center;
+        color: ${PINK_COLOR[2]};
+        /* justify-content: space-between; */
+    }
 `;
 
 const NavIcon = styled.nav`
@@ -82,6 +122,16 @@ const NavIcon = styled.nav`
             background-color: ${BLUE_COLOR.Turkish};
         }
     }
+    @media screen and (max-width: 500px) {
+        width: 100%;
+        height: 100%;
+        padding: 10px 20px;
+        justify-content: space-between;
+        .head-icon {
+            width: 50px;
+            height: 50px;
+        }
+    }
 `;
 
 const Header = () => {
@@ -91,7 +141,9 @@ const Header = () => {
                 <div className="center">
                     <Link to="/">
                         <GiCube size={50} fill={'#fff'} />
-                        <Logo>logo</Logo>
+                        <Logo>
+                            <h1>Anabada</h1>
+                        </Logo>
                     </Link>
                 </div>
             </div>

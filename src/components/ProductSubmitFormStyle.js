@@ -21,6 +21,21 @@ export const ProductForm = styled.form`
         width: 100%;
         height: 600px;
     }
+    .btn-box {
+        display: flex;
+        margin-top: 50px;
+        /* gap: 20px; */
+    }
+    @media screen and (max-width: 1100px) {
+        flex-direction: column;
+        align-items: center;
+        .core {
+            width: 100%;
+        }
+    }
+    @media screen and (max-width: 500px) {
+        padding: 20px 20px;
+    }
 `;
 
 export const ImgBox = styled.div`
@@ -41,6 +56,12 @@ export const ImgBox = styled.div`
         border-radius: 14px;
         font-size: 1.1rem;
     }
+    @media screen and (max-width: 1100px) {
+        width: 100%;
+    }
+    @media screen and (max-width: 500px) {
+        height: 530px;
+    }
 `;
 
 export const ProductThumbnail = styled.div`
@@ -53,6 +74,9 @@ export const ProductThumbnail = styled.div`
         object-fit: cover;
         object-position: center;
     }
+    @media screen and (max-width: 500px) {
+        height: 400px;
+    }
 `;
 export const ProductImgs = styled.div`
     display: flex;
@@ -63,12 +87,13 @@ export const ProductImgs = styled.div`
         object-fit: cover;
         object-position: center;
         border-right: 2px solid #333;
+        filter: brightness(0.7);
         cursor: pointer;
         &:nth-child(4) {
             border-right: none;
         }
         &:hover {
-            filter: brightness(0.8);
+            filter: brightness(1);
         }
     }
 `;

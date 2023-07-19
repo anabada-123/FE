@@ -12,11 +12,7 @@ function App() {
     return (
         <QueryClientProvider client={queryClient}>
             <GlobalStyle />
-            <Header />
-            <Main>
-                <Router />
-            </Main>
-            <Footer />
+            <Router />
         </QueryClientProvider>
     );
 }

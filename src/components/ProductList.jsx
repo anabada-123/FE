@@ -8,6 +8,14 @@ const ProductListSt = styled.ul`
     justify-content: flex-start;
     flex-wrap: wrap;
     gap: 50px 17px;
+    @media screen and (max-width: 768px) {
+        padding: 30px 0 50px;
+        justify-content: center;
+    }
+    @media screen and (max-width: 500px) {
+        padding: 30px 24px 50px;
+        justify-content: center;
+    }
 `;
 
 export const ProductList = ({ data }) => {
@@ -22,7 +30,7 @@ export const ProductList = ({ data }) => {
                             key={`item-${item.id}`}
                             id={item.id}
                             title={item.itemName}
-                            seller={'mock'}
+                            place={item.tradingPosition}
                             date={item.day}
                             srcImg={item.img}
                             altImg={item.imgalt}

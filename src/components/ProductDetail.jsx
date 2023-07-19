@@ -33,12 +33,14 @@ const ProductImgs = styled.div`
         object-fit: cover;
         object-position: center;
         border-right: 2px solid #333;
+        filter: brightness(0.7);
+
         cursor: pointer;
         &:nth-child(4) {
             border-right: none;
         }
         &:hover {
-            filter: brightness(0.8);
+            filter: brightness(1);
         }
     }
 `;
@@ -128,13 +130,28 @@ const ProductInfo = styled.div`
             word-break: break-word;
         }
     }
+    //[ ]반응형 확인하기
+    @media screen and (max-width: 1100px) {
+        flex-direction: column;
+        align-items: center;
+        .core {
+            width: 100%;
+        }
+    }
+    @media screen and (max-width: 500px) {
+        padding: 20px 20px;
+    }
 `;
 
 // MEMO : 서버주소/static/img/${변수}
 const ProductDetail = ({ data, btnDeleteEvent }) => {
     const nav = useNavigate();
-    const [mainImg, setMainImg] = useState(data.img);
+    const [mainImg, setMainImg] = useState();
     const subImg = data.imgList;
+
+    useEffect(() => {
+        setMainImg(data.img);
+    }, [data.img]);
 
     const onClickImageHandler = (idx) => {
         setMainImg(subImg[idx]);

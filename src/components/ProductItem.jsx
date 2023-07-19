@@ -17,6 +17,12 @@ const ProductCard = styled.li`
         box-shadow: 0 0px 0 #333;
         transform: translateY(0px);
     }
+    @media screen and (max-width: 768px) {
+        width: calc(50% - 16px);
+    }
+    @media screen and (max-width: 500px) {
+        width: 100%;
+    }
 `;
 
 const ProductImgWrap = styled.div`
@@ -29,6 +35,9 @@ const ProductImgWrap = styled.div`
         height: 100%;
         object-fit: cover;
         object-position: center;
+    }
+    @media screen and (max-width: 500px) {
+        height: 300px;
     }
 `;
 
@@ -56,7 +65,7 @@ const ProductInfo = styled.div`
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        color: #bf2929;
+        color: #777;
     }
     .prpduct-data {
         font-size: 0.9rem;
@@ -65,7 +74,7 @@ const ProductInfo = styled.div`
     }
 `;
 
-const ProductItem = ({ id, title, seller, date, srcImg, altImg }) => {
+const ProductItem = ({ id, title, place, date, srcImg, altImg }) => {
     const regex = /^(\d{4}-\d{2}-\d{2})/;
     const match = date.match(regex)?.[0];
     const maxTitleLength = 15;
@@ -79,7 +88,7 @@ const ProductItem = ({ id, title, seller, date, srcImg, altImg }) => {
                 </ProductImgWrap>
                 <ProductInfo>
                     <h3>{titleText}</h3>
-                    <p className="prpduct-seller">{seller}</p>
+                    <p className="prpduct-seller">{place}</p>
                     <p className="prpduct-data">{match}</p>
                 </ProductInfo>
             </Link>

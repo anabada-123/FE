@@ -306,14 +306,16 @@ const ProductUpdateContainer = () => {
                     $center
                 />
             </div>
-            <Button.Primary
-                onClick={() => {
-                    nav(-1);
-                }}
-            >
-                수정 취소하기
-            </Button.Primary>
-            <Button.Secondary>상품 수정하기</Button.Secondary>
+            <div className="btn-box">
+                <Button.Primary
+                    onClick={() => {
+                        nav(-1);
+                    }}
+                >
+                    수정 취소하기
+                </Button.Primary>
+                <Button.Secondary>상품 수정하기</Button.Secondary>
+            </div>
         </ProductForm>
     );
 };

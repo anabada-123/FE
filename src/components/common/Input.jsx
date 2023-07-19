@@ -97,6 +97,9 @@ const InputFileWrapSt = styled.div`
             box-shadow: 0 0px 0 #333;
             transform: translateY(0px);
         }
+        @media screen and (max-width: 500px) {
+            width: 60%;
+        }
     }
 `;
 

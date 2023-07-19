@@ -40,6 +40,11 @@ const GlobalStyle = createGlobalStyle`
         border: 2px solid #333;
         border-radius: 20px;
         box-shadow: 0 3px 0 #333;
+        @media screen and (max-width: 500px) {
+            width: 90%;
+            margin: 0 auto;
+            text-align: center
+        }
     }
     h1,h2,h3{
         font-family: 'SBAggroB',-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -56,9 +61,12 @@ const GlobalStyle = createGlobalStyle`
     }
     .center{
         max-width: 1280px;
-        min-width: 800px;
+        /* min-width: 800px; */
         padding: 0 30px;
         margin: auto;
+        @media screen and (max-width: 500px) {
+        padding: 0;
+        }
     }
 `;
 
