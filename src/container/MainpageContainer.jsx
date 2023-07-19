@@ -21,9 +21,17 @@ const MainpageContainer = () => {
 
     const totalPages = responsePage;
     const maxButtons = 5; // 표시할 버튼의 최대 개수
-
+    //[ ]최대 최소 버튼 확인
     const handleClick = async (page) => {
+        if (page < 1) {
+            setCurrentPage(1);
+            return;
+        } else if (page > totalPages) {
+            setCurrentPage(totalPages);
+            return;
+        }
         await setCurrentPage(page);
+        console.log(page);
         refetch();
     };
 
