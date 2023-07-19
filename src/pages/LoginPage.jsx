@@ -92,6 +92,9 @@ const LoginForm = styled.form`
             width: 80%;
         }
     }
+    @media screen and (max-width: 400px) {
+        width: 74%;
+    }
 `;
 
 const LoginPage = () => {

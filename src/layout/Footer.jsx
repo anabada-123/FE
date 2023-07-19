@@ -202,14 +202,14 @@ const Footer = () => {
                         미니 프로젝트 주특기 주차 미니 프로젝트 주특기 주차 미니 프로젝트
                     </pre>
                     <div className="link-box">
-                        <GoGithubLink url="https://github.com/anabada-123/FE">
+                        <GoGithubLink href="https://github.com/anabada-123/FE">
                             <span>
                                 <BsGithub size={20} />
                                 FE github
                             </span>
                             <FiArrowRight size={25} />
                         </GoGithubLink>
-                        <GoGithubLink url="https://github.com/anabada-123/BE">
+                        <GoGithubLink href="https://github.com/anabada-123/BE">
                             <span>
                                 <BsGithub size={20} />
                                 BE github

@@ -9,7 +9,7 @@ export const signUp = async (signupData) => {
                 'Content-Type': 'application/json',
             },
         };
-        console.log(signupData);
+        // console.log(signupData);
         const response = await axios.post(
             `${process.env.REACT_APP_SERVER_URL}/register`,
             signupData,
@@ -17,6 +17,7 @@ export const signUp = async (signupData) => {
         );
         return response.data;
     } catch (error) {
+        console.log(error);
         // if (error.response.status === 401) {
         //     alert(error.response.data.message);
         // }
@@ -29,7 +30,7 @@ export const test = async (test) => {
 
 export const login = async (logininfo) => {
     try {
-        console.log(logininfo);
+        // console.log(logininfo);
         const config = {
             headers: {
                 'Content-Type': 'application/json',
@@ -44,10 +45,12 @@ export const login = async (logininfo) => {
         );
 
         // console.log(response);
-        console.log(response.data);
+        // console.log(response.data);
         // console.log(document.cookie);
         return response.data;
-    } catch (error) {}
+    } catch (error) {
+        console.log(error);
+    }
 };
 // const token = response.data.Authorization;
 // localStorage.setItem('accessToken', token);

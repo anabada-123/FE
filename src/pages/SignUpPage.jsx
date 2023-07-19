@@ -262,7 +262,7 @@ const SignUpPage = () => {
             successKey: emailAuthCode,
         };
         await emailAuthcodeCheckMutation.mutateAsync(emailAuthData);
-        console.log(emailAuthData);
+        // console.log(emailAuthData);
     };
 
     const [phonenumber, setPhonenumber, onChangePhonenumberHandler] = useInput('');

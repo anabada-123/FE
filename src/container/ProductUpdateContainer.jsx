@@ -172,7 +172,7 @@ const ProductUpdateContainer = () => {
             });
         }
 
-        console.log(items);
+        // console.log(items);
 
         formData.append(
             'item',
@@ -186,9 +186,9 @@ const ProductUpdateContainer = () => {
         await mutation.mutateAsync(formData);
 
         // formData 콘솔 확인하기
-        for (let value of formData.values()) {
-            console.log(value);
-        }
+        // for (let value of formData.values()) {
+        //     console.log(value);
+        // }
         setTitle('');
         setProductOneDesc('');
         setProductDesc('');

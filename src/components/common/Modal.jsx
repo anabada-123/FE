@@ -64,7 +64,7 @@ const Modal = ({ children, isOpen, handleClose, subText }) => {
                             <ModalTitle>{children}</ModalTitle>
                             {subText && <p className="modal-content">{subText}</p>}
                         </div>
-                        <Button.Primary onClick={handleClose}>확인</Button.Primary>
+                        <Button.Secondary onClick={handleClose}>확인</Button.Secondary>
                     </ModalStyle>
                 </ModalBack>
             )}

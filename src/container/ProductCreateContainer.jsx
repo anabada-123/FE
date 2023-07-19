@@ -165,10 +165,10 @@ const ProductCreateContainer = () => {
             multipleImg.forEach((file) => {
                 formData.append(`img`, file);
             });
-        console.log(items);
-        for (let value of formData.values()) {
-            console.log(value);
-        }
+        // console.log(items);
+        // for (let value of formData.values()) {
+        //     console.log(value);
+        // }
 
         await mutation.mutateAsync(formData);
 

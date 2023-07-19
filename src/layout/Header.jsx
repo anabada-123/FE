@@ -156,7 +156,7 @@ const Header = () => {
                         </Button.Icon>
                     </form>
                     <NavIcon>
-                        <Link to="/productcreate" className="head-icon">
+                        <Link to="/productuplode" className="head-icon">
                             <BiAddToQueue size={24} />
                         </Link>
                         <Link to="/" className="head-icon">

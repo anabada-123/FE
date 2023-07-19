@@ -24,17 +24,19 @@ export const ProductForm = styled.form`
     .btn-box {
         display: flex;
         margin-top: 50px;
-        /* gap: 20px; */
     }
     @media screen and (max-width: 1100px) {
         flex-direction: column;
-        align-items: center;
+        /* align-items: center; */
         .core {
             width: 100%;
         }
     }
     @media screen and (max-width: 500px) {
         padding: 20px 20px;
+        .btn-box {
+            flex-direction: column;
+        }
     }
 `;
 
