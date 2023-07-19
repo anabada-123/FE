@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Input from '../components/common/Input';
 import Button from '../components/common/Button/Button';
 import useInput from '../hooks/useInput';
+import Modal from '../components/common/Modal';
 import { YELLOW_COLOR, PINK_COLOR, BLUE_COLOR } from '../assets/colors';
 import { useMutation, useQueryClient } from 'react-query';
 import {
@@ -10,8 +11,7 @@ import {
     idAuthCheck,
     emailAuthCheck,
     nickNameAuthCheck,
-    emailAuthcodeCheck,
-    authCheck,
+    emailAuthCodeCheck,
 } from '../api/auth';
 
 import { Link } from 'react-router-dom';
@@ -36,7 +36,7 @@ const SignUpPageStyle = styled.div`
         top: 0;
         border-bottom: 5px solid #333;
         border-radius: 15px;
-        z-index: 999;
+        z-index: 1;
     }
 `;
 
@@ -113,66 +113,155 @@ const BackGroundFixed = styled.div`
     background-color: ${YELLOW_COLOR[1]};
 `;
 const SignUpPage = () => {
+    const [isOpen, setIsOpen] = useState(false);
+    const [massage, setMassage] = useState('');
+    const openModal = () => {
+        setIsOpen(true);
+    };
+    const handleClose = () => {
+        setIsOpen(false);
+    };
+
     const [nickName, setNickName, onChangeNickNameHandler] = useInput('');
+    const [nicknameCheck, setNicknameCheck] = useState(false);
+    const nickNameCheckMutation = useMutation(() => nickNameAuthCheck(nickName), {
+        onSuccess: (data) => {
+            if (data.msg) {
+                setMassage(data.msg);
+                setNicknameCheck(true);
+            }
+            if (data.errorMsg) {
+                setMassage(data.errorMsg);
+                setNicknameCheck(false);
+            }
+            openModal();
+        },
+    });
+    const onClickNickNameCheckHandler = async (e) => {
+        e.preventDefault();
+        const nickname = {
+            nickname: nickName,
+        };
+        await nickNameCheckMutation.mutateAsync(nickname);
+    };
+
     const [userId, setUserId, onChangeUserIDHandler] = useInput('');
+    const [userIdCheck, setUserIdCheck] = useState(false);
+    const idCheckMutation = useMutation((userId) => idAuthCheck(userId), {
+        onSuccess: (data) => {
+            if (data.msg) {
+                setMassage(data.msg);
+                setUserIdCheck(true);
+            }
+            if (data.errorMsg) {
+                setMassage(data.errorMsg);
+                setUserIdCheck(false);
+            }
+            openModal();
+        },
+    });
+    const onClickIDCheckHandler = async (e) => {
+        e.preventDefault();
+        await idCheckMutation.mutateAsync(userId);
+    };
+
     const [userpw, setUserpw, onChangeUserpwHandler] = useInput('');
     const [passwordCheck, setPasswordCheck, onChangepasswordCheckHandler] = useInput('');
+
+    //이메일 인증
+
     const [email, setEmail, onChangeEmailHandler] = useInput('');
-    const [emailCheckCode, setEmailCheckCode, onChangeEmailCheckCodeHandler] = useInput('');
+
+    const emailCheckMutation = useMutation((email) => emailAuthCheck(email), {
+        onSuccess: (data) => {
+            if (data.msg) {
+                if (data.msg) {
+                    setMassage(data.msg);
+                    openModal();
+                }
+            }
+        },
+    });
+    const onClickEmailCodeHandler = async (e) => {
+        e.preventDefault();
+        await emailCheckMutation.mutateAsync(email);
+    };
+
+    const [emailAuthCode, setEmailAuthCode, onChangeEmailAuthCheckCodeHandler] = useInput('');
+    const [MailAuthCheck, setMailAuthCheck] = useState(false);
+    const emailAuthcodeCheckMutation = useMutation(
+        (emailAuthData) => emailAuthCodeCheck(emailAuthData),
+        {
+            onSuccess: (data) => {
+                if (data.msg) {
+                    setMassage(data.msg);
+                    setMailAuthCheck(true);
+                }
+                if (data.errorMsg) {
+                    setMassage(data.errorMsg);
+                    setUserIdCheck(false);
+                }
+                openModal();
+            },
+        }
+    );
+    const onChangeEmailAuthCodeCheckHandler = async (e) => {
+        e.preventDefault();
+        // if (MailAuthCheck) {
+        //     setMassage('인증 코드 확인을 완료한 이메일입니다.');
+        //     openModal();
+        //     return;
+        // }
+        const emailAuthData = {
+            email: email,
+            successKey: emailAuthCode,
+        };
+        await emailAuthcodeCheckMutation.mutateAsync(emailAuthData);
+        console.log(emailAuthData);
+    };
+
     const [phonenumber, setPhonenumber, onChangePhonenumberHandler] = useInput('');
 
-    const [nicknameCheck, setNicknameCheck] = useState(false);
-    const [userIdCheck, setUserIdCheck] = useState(false);
-    const [emailCheck, setEmailCheck] = useState(false);
-    const [authCodeCheck, setAuthCodeCheck] = useState(false);
+    const signupMutation = useMutation((userLoginInfo) => signUp(userLoginInfo), {
+        onSuccess: (data) => {
+            setMassage(data.msg);
+            openModal();
+        },
+    });
 
-    // const signup = useMutation((userLoginInfo) => signUp(userLoginInfo));
-    // const signup = useMutation((userLoginInfo) => idAuthCheck(userLoginInfo));
-    // const signup = useMutation((userLoginInfo) => emailAuthCheck(userLoginInfo));
-    // const signup = useMutation((userLoginInfo) => nickNameAuthCheck(userLoginInfo));
-    // const signup = useMutation((userLoginInfo) => emailAuthcodeCheck(userLoginInfo));
-    // const signup = useMutation((userLoginInfo) => authCheck(userLoginInfo));
-
-    const onClickIDCheckHandler = (e) => {
-        e.preventDefault();
-        console.log(userId);
-    };
-    const onClickNickNameCheckHandler = (e) => {
-        e.preventDefault();
-        console.log(nickName);
-    };
-    const onClickSendAuthCodeHandler = (e) => {
-        e.preventDefault();
-        console.log(email);
-    };
-    const onClickEmailCheckHandler = (e) => {
-        e.preventDefault();
-        console.log(emailCheckCode);
-    };
+    // const authCheckMutation = useMutation((userLoginInfo) => authCheck(userLoginInfo));
 
     const SignUpOnSubmitHandler = async (e) => {
         e.preventDefault();
 
         if (userpw !== passwordCheck) {
-            alert('비밀번호가 일치하지 않습니다.');
+            setMassage('비밀번호가 일치하지 않습니다.');
+            openModal();
             return;
         } else if (!nicknameCheck) {
-            alert('닉네임 중복체크를 해주세요');
+            setMassage('닉네임 중복체크를 해주세요');
+            openModal();
+            return;
         } else if (!userIdCheck) {
-            alert('아이디 중복체크를 해주세요');
-        } else if (!emailCheck) {
-            alert('이메일 중복체크를 해주세요');
+            setMassage('아이디 중복체크를 해주세요');
+            openModal();
+            return;
+        } else if (!MailAuthCheck) {
+            setMassage('이메일 인증를 해주세요');
+            openModal();
+            return;
         }
 
         const userLoginInfo = {
-            userId,
-            nickName,
+            userid: userId,
+            nickname: nickName,
             userpw,
             email,
             phonenumber,
+            successKey: emailAuthCode,
         };
-        console.log(userLoginInfo);
-        // await mutation.mutateAsync(userLoginInfo);
+
+        await signupMutation.mutateAsync(userLoginInfo);
     };
 
     return (
@@ -190,6 +279,7 @@ const SignUpPage = () => {
                                     placeholder="아이디을 입력해주세요"
                                     onChange={onChangeUserIDHandler}
                                     $coreValue={userId ? false : true}
+                                    readOnly={userIdCheck}
                                 />
                                 {/* <span className="coreValue">* 중복체크 해주세요</span> */}
                                 <Button.Secondary
@@ -205,6 +295,7 @@ const SignUpPage = () => {
                             <Input
                                 label={'비밀번호'}
                                 value={userpw}
+                                type={'password'}
                                 placeholder="비밀번호을 입력해주세요"
                                 onChange={onChangeUserpwHandler}
                                 $coreValue={userpw ? false : true}
@@ -212,8 +303,9 @@ const SignUpPage = () => {
                             <div className="pw-check-box">
                                 <Input
                                     label={'비밀번호 확인'}
+                                    type={'password'}
                                     value={passwordCheck}
-                                    placeholder="위에 입력한 비밀번호와 똑같이 입력해주세요"
+                                    placeholder="입력한 비밀번호와 똑같이 입력해주세요"
                                     onChange={onChangepasswordCheckHandler}
                                 />
                                 {userpw !== passwordCheck && passwordCheck ? (
@@ -234,12 +326,13 @@ const SignUpPage = () => {
                                     placeholder="닉네임을 입력해주세요"
                                     onChange={onChangeNickNameHandler}
                                     $coreValue={nickName ? false : true}
+                                    readOnly={nicknameCheck}
                                 />
                                 {/* <span className="coreValue">* 중복체크 해주세요</span> */}
                                 <Button.Secondary
                                     $width={'120px'}
                                     $center={'center'}
-                                    onClick={onClickIDCheckHandler}
+                                    onClick={onClickNickNameCheckHandler}
                                 >
                                     중복 확인
                                 </Button.Secondary>
@@ -253,12 +346,13 @@ const SignUpPage = () => {
                                     placeholder="example@gmail.com"
                                     onChange={onChangeEmailHandler}
                                     $coreValue={email ? false : true}
+                                    readOnly={MailAuthCheck}
                                 />
                                 {/* <span className="coreValue">* 중복체크 해주세요</span> */}
                                 <Button.Secondary
                                     $width={'120px'}
                                     $center={'center'}
-                                    onClick={onClickIDCheckHandler}
+                                    onClick={onClickEmailCodeHandler}
                                 >
                                     인증 코드
                                 </Button.Secondary>
@@ -266,16 +360,17 @@ const SignUpPage = () => {
                             <CheckBox>
                                 <Input
                                     label={'인증코드'}
-                                    value={emailCheckCode}
+                                    value={emailAuthCode}
                                     placeholder="인증코드을 입력해주세요"
-                                    onChange={onChangeEmailCheckCodeHandler}
-                                    $coreValue={emailCheckCode ? false : true}
+                                    onChange={onChangeEmailAuthCheckCodeHandler}
+                                    $coreValue={emailAuthCode ? false : true}
+                                    readOnly={MailAuthCheck}
                                 />
                                 {/* <span className="coreValue">* 중복체크 해주세요</span> */}
                                 <Button.Secondary
                                     $width={'120px'}
                                     $center={'center'}
-                                    onClick={onClickIDCheckHandler}
+                                    onClick={onChangeEmailAuthCodeCheckHandler}
                                 >
                                     인증 확인
                                 </Button.Secondary>
@@ -300,6 +395,9 @@ const SignUpPage = () => {
                     </Link>
                 </SignUpForm>
             </SignUpPageStyle>
+            <Modal isOpen={isOpen} handleClose={handleClose}>
+                {massage && massage}
+            </Modal>
         </>
     );
 };
