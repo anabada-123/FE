@@ -87,7 +87,7 @@ const DevelopedPageList = styled.div`
             transform: translateY(0);
             /* opacity: 0.6; */
             svg {
-                stroke: #333;
+                stroke: #000;
             }
         }
         &:active {
@@ -129,6 +129,12 @@ const GoGithubLink = styled.a`
     svg {
         stroke: #000;
     }
+    span {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+    }
     &:hover {
         box-shadow: 0px 0px 0px #000;
         transform: translateY(0);
@@ -142,14 +148,14 @@ const Footer = () => {
         <FooterSt>
             <div className="center">
                 <ProjectOutline>
-                    <p>introduce Project</p>
+                    <p>Introduce Project</p>
                     <pre>
                         주특기 주차 미니 프로젝트 주특기 주차 <br />
                         미니 프로젝트 주특기 주차 미니 프로젝트 주특기 주차 미니 프로젝트
                     </pre>
                 </ProjectOutline>
                 <DevelopedPageList>
-                    <p>DevelopedPages</p>
+                    <p>Developed pages</p>
                     <ul>
                         <Link to="/">
                             <li>
@@ -197,11 +203,17 @@ const Footer = () => {
                     </pre>
                     <div className="link-box">
                         <GoGithubLink url="https://github.com/anabada-123/FE">
-                            FE github link
+                            <span>
+                                <BsGithub size={20} />
+                                FE github
+                            </span>
                             <FiArrowRight size={25} />
                         </GoGithubLink>
                         <GoGithubLink url="https://github.com/anabada-123/BE">
-                            BE github link
+                            <span>
+                                <BsGithub size={20} />
+                                BE github
+                            </span>
                             <FiArrowRight size={25} />
                         </GoGithubLink>
                     </div>

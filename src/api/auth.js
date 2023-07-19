@@ -109,7 +109,7 @@ export const nickNameAuthCheck = async (nickName) => {
         } else {
             console.log(error);
         }
-        return false;
+        // return false;
     }
 };
 
@@ -128,15 +128,14 @@ export const emailAuthCheck = async (email) => {
             body,
             config
         );
-        alert(response.data.msg);
-        return true;
+        return response.data;
     } catch (error) {
         if (error.response.status === 400) {
             console.log(error.response.data.errorMsg);
         } else {
             console.log(error);
         }
-        return false;
+        // return false;
     }
 };
 
@@ -148,13 +147,21 @@ export const emailAuthCodeCheck = async (emailAuth) => {
                 'Content-Type': 'application/json',
             },
         };
-        console.log(emailAuth);
-        await axios.post(
+        // console.log(emailAuth);
+        const response = await axios.post(
             `${process.env.REACT_APP_SERVER_URL}/register/email-check`,
             emailAuth,
             config
         );
-    } catch (error) {}
+        return response.data;
+    } catch (error) {
+        if (error.response.status === 400) {
+            console.log(error.response.data.errorMsg);
+        } else {
+            console.log(error);
+        }
+        // return false;
+    }
 };
 
 export const authCheck = async () => {
@@ -167,9 +174,14 @@ export const authCheck = async () => {
         });
         return true;
     } catch (error) {
-        // if (error.response.status === 401) {
+        // if (er        if (error.response.status === 400) {
+        //     console.log(error.response.data.errorMsg);
+        // } else {
+        //     console.log(error);
+        // }
+        // return false;ror.response.status === 401) {
         //     localStorage.removeItem('accessToken');
         // }
-        return false;
+        // return false;
     }
 };
