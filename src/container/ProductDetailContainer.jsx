@@ -24,7 +24,6 @@ const ProductDetailContainer = () => {
     };
     const handleIntentCheck = () => {
         setIsOpenIntentCheck(false);
-        nav('/');
     };
     const { id } = useParams();
     const nav = useNavigate();
@@ -50,6 +49,7 @@ const ProductDetailContainer = () => {
 
     const onClickDelete = async (id) => {
         await mutation.mutateAsync(id);
+        nav('/');
     };
 
     return (
