@@ -30,7 +30,7 @@ export const signUp = async (signupData) => {
 
 export const login = async (logininfo) => {
     try {
-        // console.log(logininfo);
+        console.log(logininfo);
         const config = {
             headers: {
                 'Content-Type': 'application/json',
@@ -43,6 +43,7 @@ export const login = async (logininfo) => {
             logininfo,
             config
         );
+
         // const token = response.data.Authorization;
         if (response.status === 200) {
             localStorage.setItem('accessToken', 'faketoken');
