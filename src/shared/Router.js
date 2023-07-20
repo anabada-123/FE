@@ -13,7 +13,7 @@ import Layout from '../layout/Layout';
 const Router = () => {
     return (
         <BrowserRouter>
-            <ScrollToTop />
+            {/* <ScrollToTop /> */}
             <Routes>
                 <Route path="/" element={<Layout />}>
                     <Route element={<PrivateRoute isAuth={true} />}>
