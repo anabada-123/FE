@@ -24,9 +24,9 @@ export const signUp = async (signupData) => {
     }
 };
 
-export const test = async (test) => {
-    await axios.post(`${process.env.REACT_APP_SERVER_URL}/test`);
-};
+// export const test = async (test) => {
+//     await axios.post(`${process.env.REACT_APP_SERVER_URL}/test`);
+// };
 
 export const login = async (logininfo) => {
     try {
@@ -43,17 +43,16 @@ export const login = async (logininfo) => {
             logininfo,
             config
         );
-
-        // console.log(response);
-        // console.log(response.data);
-        // console.log(document.cookie);
-        return response.data;
+        // const token = response.data.Authorization;
+        if (response.status === 200) {
+            localStorage.setItem('accessToken', 'faketoken');
+        }
+        // return response.data;
     } catch (error) {
         console.log(error);
+        localStorage.removeItem('accessToken');
     }
 };
-// const token = response.data.Authorization;
-// localStorage.setItem('accessToken', token);
 // console.log(response.headers);
 // console.log(error);
 // return error.response.data;

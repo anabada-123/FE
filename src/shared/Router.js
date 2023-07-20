@@ -16,7 +16,7 @@ const Router = () => {
             <ScrollToTop />
             <Routes>
                 <Route path="/" element={<Layout />}>
-                    <Route element={<PrivateRoute isAuth={false} />}>
+                    <Route element={<PrivateRoute isAuth={true} />}>
                         <Route path="/" element={<Home />} />
                         <Route path="/productuplode" element={<ProductCreatePage />} />
                         <Route path="/productdetail/:id" element={<ProductDetailPage />} />
