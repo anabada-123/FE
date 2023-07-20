@@ -17,7 +17,6 @@ import {
 } from '../components/ProductSubmitFormStyle';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-// import { updateItem } from '../redux/modules/itemSlice';
 import { useNavigate } from 'react-router-dom';
 import { BsCardImage } from 'react-icons/bs';
 import Modal, { IntentCheckModel } from '../components/common/Modal';
@@ -87,14 +86,12 @@ const ProductUpdateContainer = () => {
             setLocation(data.tradingPosition);
             setImage(data.img);
             setMultipleImage(data.imgList);
-            // setIsSale(item.check);
             imgListNameExtraction(data.imgList, data.img);
-            // console.log(data.itemName);
-            // console.log(title);
         }
 
         // }
     }, []);
+
     //이미지 업로드 시 미리보기
     // const ImageChangehandler = (event) => {
     //     const file = event.target.files[0];
@@ -125,7 +122,6 @@ const ProductUpdateContainer = () => {
         // 첫 번째 이미지는 단일 이미지 미리보기로 유지
         if (selectedFiles.length > 0) {
             const firstFile = selectedFiles[0];
-            // imgRef.current = firstFile;
             const firstReader = new FileReader();
             firstReader.readAsDataURL(firstFile);
             firstReader.onloadend = () => {
@@ -142,7 +138,6 @@ const ProductUpdateContainer = () => {
                 fileReaders.push(imageDataURL);
                 fileNames.push(file.name);
                 if (fileReaders.length === selectedFiles.length) {
-                    // const imgList = [];
                     setMultipleImage((prevImgList) => [...prevImgList, ...fileReaders]);
                     setMultipleImgName((prevImgName) => [...prevImgName, ...fileNames]);
                 }
@@ -153,7 +148,6 @@ const ProductUpdateContainer = () => {
     const onClickImageHandler = (imageDataURL, idx) => {
         setImage(imageDataURL);
         setImgName(multipleImgName[idx]);
-        // imgRef.current = multipleImgRef.current[idx];
     };
     // 트레이드 아이템 등록
     const queryClient = useQueryClient();
@@ -173,7 +167,6 @@ const ProductUpdateContainer = () => {
 
     const ProductRegSubmitHandler = async (e) => {
         e.preventDefault();
-        // const img = imgRef.current;
         const multipleImg = multipleImgRef.current;
         const items = {
             itemName: title,
@@ -184,8 +177,6 @@ const ProductUpdateContainer = () => {
             cate: cate,
             status: '판매완료',
             mainImgName: imgName,
-            // imgNameList: multipleImgName,
-            // check: isSale,
         };
         const formData = new FormData();
 
@@ -198,16 +189,12 @@ const ProductUpdateContainer = () => {
             });
         }
 
-        // console.log(items);
-
         formData.append(
             'item',
             new Blob([JSON.stringify(items)], {
                 type: 'application/json',
             })
         );
-
-        // formData.append('mainImg', img);
 
         await mutation.mutateAsync(formData);
 
@@ -221,7 +208,6 @@ const ProductUpdateContainer = () => {
         e.preventDefault();
         setIsSale(!isSale);
     };
-    // console.log(multipleImgName);
     return (
         <>
             <ProductForm
@@ -256,7 +242,6 @@ const ProductUpdateContainer = () => {
                         ) : (
                             <NoneImg className="multiple">
                                 <BsCardImage size={30} color={'#777'} />
-                                {/* <p>미리보기 이미지가 없습니다</p> */}
                             </NoneImg>
                         )}
                     </ProductImgs>
@@ -275,10 +260,8 @@ const ProductUpdateContainer = () => {
                     <InputFile
                         label={'대표이미지'}
                         accept="image/*"
-                        // $idName={'info-img'}
                         $value={imgName}
                         $functionActive={'none-active'}
-                        // onChange={ImageChangehandler}
                     />
                     <Textarea
                         label={'제목'}

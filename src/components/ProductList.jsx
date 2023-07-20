@@ -19,8 +19,6 @@ const ProductListSt = styled.ul`
 `;
 
 export const ProductList = ({ data }) => {
-    // console.log(data[0].img);
-    // console.log(data[0].itemName);
     return (
         <ProductListSt>
             {data &&

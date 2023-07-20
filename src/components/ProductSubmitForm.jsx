@@ -67,7 +67,6 @@ const ProductSubmitForm = ({
                         ) : (
                             <NoneImg className="multiple">
                                 <BsCardImage size={30} color={'#777'} />
-                                {/* <p>미리보기 이미지가 없습니다</p> */}
                             </NoneImg>
                         )}
                     </ProductImgs>
@@ -85,10 +84,8 @@ const ProductSubmitForm = ({
                     <InputFile
                         label={'대표이미지 지정'}
                         accept="image/*"
-                        // $idName={'info-img'}
                         $value={imgName}
                         $functionActive={'none-active'}
-                        // onChange={MainImagehandler}
                     />
                     <Input
                         label={'제목'}

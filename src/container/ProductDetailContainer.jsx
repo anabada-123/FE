@@ -30,6 +30,8 @@ const ProductDetailContainer = () => {
     const mutation = useMutation((id) => deleteTradingItems(id), {
         onSuccess: (msg) => {
             if (msg === '물품이 삭제되었습니다.') {
+                // setMassage('물품을 삭제하시겠습니까?');
+                // openModalIntentCheck();
             }
             if (msg === '물품 삭제 실패했습니다.') {
                 setMassage(msg);
@@ -46,8 +48,6 @@ const ProductDetailContainer = () => {
     const onClickDelete = async () => {
         await mutation.mutateAsync(id);
         nav('/');
-        // setMassage('물품을 삭제하시겠습니까?');
-        // openModalIntentCheck();
     };
     const handleIntentCheck = async (id) => {
         setIsOpenIntentCheck(false);

@@ -122,7 +122,6 @@ export const NoneImg = styled.div`
 `;
 
 export const ToggleIsSale = styled.div`
-    /* min-height: 54px; */
     display: flex;
     button {
         background-color: ${YELLOW_COLOR[2]};
@@ -134,7 +133,6 @@ export const ToggleIsSale = styled.div`
         color: #777;
         box-shadow: 0 8px 0px #333;
         transform: translateY(-8px);
-        /* background-color: ${YELLOW_COLOR[0]}; */
         &:first-child {
             border-radius: 10px 0 0 10px;
             &:hover {

@@ -47,8 +47,6 @@ const ProductCreateContainer = () => {
     const multipleImgRef = useRef();
 
     const nav = useNavigate();
-    const fileReaders = [];
-    const fileNames = [];
     //이미지 업로드 시 미리보기
 
     const { image, setImage, imgName, setImgName, imgRef, MainImagehandler } = useImageHandler();
@@ -114,9 +112,8 @@ const ProductCreateContainer = () => {
     const onClickImageHandler = (imageDataURL, idx) => {
         setImage(imageDataURL);
         setImgName(multipleImgName[idx]);
-        // imgRef.current = multipleImgRef.current[idx];
     };
-    // console.log(multipleImgName);
+
     // 트레이드 아이템 등록
     const queryClient = useQueryClient();
 

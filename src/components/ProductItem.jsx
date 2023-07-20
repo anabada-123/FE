@@ -4,8 +4,6 @@ import { Link } from 'react-router-dom';
 const ProductCard = styled.li`
     width: calc(20% - 16px);
     min-width: 230px;
-    /* height: 300px; */
-    /* padding: 20px; */
     overflow: hidden;
     border-radius: 25px;
     border: 2px solid #333;
@@ -42,7 +40,6 @@ const ProductImgWrap = styled.div`
 `;
 
 const ProductInfo = styled.div`
-    /* padding: 20px; */
     h3 {
         height: 65px;
         display: flex;
@@ -50,10 +47,8 @@ const ProductInfo = styled.div`
         font-size: 1.4rem;
         font-weight: bold;
         padding: 10px 20px 6px;
-        /* margin-bottom: 12px; */
         border-bottom: 2px solid #333;
         line-height: 1.05;
-        /* white-space: nowrap; */
         overflow: hidden;
         white-space: pre-wrap;
         text-overflow: ellipsis;
