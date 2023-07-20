@@ -122,11 +122,11 @@ const ProductCreateContainer = () => {
 
     const mutation = useMutation(addTradingItems, {
         onSuccess: (msg) => {
-            if (msg === '상품등록에 성공했습니다') {
+            if (msg === '상품등록을 성공했습니다') {
                 setMassage(msg);
                 openModalIntentCheck();
             }
-            if (msg === '상품등록에 실패했습니다') {
+            if (msg === '상품등록을 실패했습니다') {
                 setMassage(msg);
                 openModal();
             }
