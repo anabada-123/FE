@@ -62,9 +62,7 @@ const ProductUpdateContainer = () => {
     //     return state.item;
     // });
 
-    const { data } = useQuery('tradingItem', () => getTradingItem(id), {
-        onSuccess: (data) => {},
-    });
+    const { data } = useQuery('tradingItem', () => getTradingItem(id));
 
     const imgListNameExtraction = (imgList, mainImg) => {
         let imgListName = [];
@@ -90,7 +88,7 @@ const ProductUpdateContainer = () => {
         }
 
         // }
-    }, []);
+    }, [data]);
 
     //이미지 업로드 시 미리보기
     // const ImageChangehandler = (event) => {
