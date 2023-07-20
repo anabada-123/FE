@@ -186,13 +186,12 @@ const SignUpPage = () => {
             if (data.msg) {
                 setMassage(data.msg);
                 setNicknameCheck(true);
-                openModalIntentCheck();
             }
             if (data.errorMsg) {
                 setMassage(data.errorMsg);
                 setNicknameCheck(false);
-                openModal();
             }
+            openModal();
         },
     });
     const onClickNickNameCheckHandler = async (e) => {
@@ -298,7 +297,7 @@ const SignUpPage = () => {
     const signupMutation = useMutation((userLoginInfo) => signUp(userLoginInfo), {
         onSuccess: (data) => {
             setMassage(data.msg);
-            openModal();
+            openModalIntentCheck();
         },
     });
 
@@ -333,9 +332,7 @@ const SignUpPage = () => {
             phonenumber,
             successKey: emailAuthCode,
         };
-
         await signupMutation.mutateAsync(userLoginInfo);
-        nav('/login');
     };
 
     return (
