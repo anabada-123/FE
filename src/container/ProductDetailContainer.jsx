@@ -22,11 +22,7 @@ const ProductDetailContainer = () => {
     const openModalIntentCheck = () => {
         setIsOpenIntentCheck(true);
     };
-    const handleIntentCheck = async (id) => {
-        setIsOpenIntentCheck(false);
-        await mutation.mutateAsync(id);
-        nav('/');
-    };
+
     const { id } = useParams();
     const nav = useNavigate();
     const dispatch = useDispatch();
@@ -51,7 +47,11 @@ const ProductDetailContainer = () => {
         setMassage('물품을 삭제하시겠습니까?');
         openModalIntentCheck();
     };
-
+    const handleIntentCheck = async (id) => {
+        setIsOpenIntentCheck(false);
+        await mutation.mutateAsync(id);
+        nav('/');
+    };
     return (
         <>
             {data && (
