@@ -44,13 +44,13 @@ const ProductDetailContainer = () => {
     });
 
     const onClickDelete = async () => {
-        setMassage('물품을 삭제하시겠습니까?');
-        openModalIntentCheck();
+        await mutation.mutateAsync(id);
+        nav('/');
+        // setMassage('물품을 삭제하시겠습니까?');
+        // openModalIntentCheck();
     };
     const handleIntentCheck = async (id) => {
         setIsOpenIntentCheck(false);
-        await mutation.mutateAsync(id);
-        nav('/');
     };
     return (
         <>
