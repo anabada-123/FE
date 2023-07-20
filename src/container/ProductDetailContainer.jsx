@@ -50,7 +50,6 @@ const ProductDetailContainer = () => {
 
     const onClickDelete = async (id) => {
         await mutation.mutateAsync(id);
-        nav('/');
     };
 
     return (
