@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import { login } from '../api/auth';
 import { useMutation } from 'react-query';
 import { PINK_COLOR, YELLOW_COLOR, MONO_COLOR } from '../assets/colors';
-import Modal from '../components/common/Modal';
+import Modal, { IntentCheckModel } from '../components/common/Modal';
 import { test } from '../api/auth';
 const LoginPageSt = styled.div`
     width: 100%;
@@ -98,19 +98,26 @@ const LoginForm = styled.form`
 `;
 
 const LoginPage = () => {
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpenIntentCheck, setIsOpenIntentCheck] = useState(false);
+
     const [massage, setMassage] = useState('');
-    const openModal = () => {
-        setIsOpen(true);
+    const openModalIntentCheck = () => {
+        setIsOpenIntentCheck(true);
     };
-    const handleClose = () => {
-        setIsOpen(false);
+    const handleIntentCheck = () => {
+        setIsOpenIntentCheck(false);
+        window.location.reload();
     };
     const [userID, setUserID, userIDHandler] = useInput();
     const [password, setPassword, passwordHandler] = useInput();
 
     // const loginSearch = useQuery('items', () => login(userID, password));
-    const mutation = useMutation((userLoginInfo) => login(userLoginInfo));
+    const mutation = useMutation((userLoginInfo) => login(userLoginInfo), {
+        onSuccess: () => {
+            setMassage('로그인 성공했습니다');
+            openModalIntentCheck();
+        },
+    });
     // const mutation = useMutation(test);
 
     const LoginOnSubmitHandler = async (e) => {
@@ -153,9 +160,12 @@ const LoginPage = () => {
                     </LoginForm>
                 </div>
             </LoginPageSt>
-            <Modal isOpen={isOpen} handleClose={handleClose}>
+            <IntentCheckModel
+                isOpenIntentCheck={isOpenIntentCheck}
+                onClickEvent={handleIntentCheck}
+            >
                 {massage && massage}
-            </Modal>
+            </IntentCheckModel>
         </>
     );
 };

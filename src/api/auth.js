@@ -45,12 +45,13 @@ export const login = async (logininfo) => {
         );
 
         // const token = response.data.Authorization;
+        // console.log(response);
         if (response.status === 200) {
             localStorage.setItem('accessToken', 'faketoken');
         }
         // return response.data;
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         localStorage.removeItem('accessToken');
     }
 };

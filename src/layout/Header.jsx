@@ -141,6 +141,10 @@ const NavIcon = styled.nav`
 `;
 
 const Header = () => {
+    const logoutOnClick = () => {
+        localStorage.removeItem('token');
+        window.location.reload();
+    };
     return (
         <HeaderSt>
             <div className="logo">
@@ -171,9 +175,9 @@ const Header = () => {
                         <Link to="/" className="head-icon">
                             <BsFillChatFill size={20} />
                         </Link>
-                        <Link to="/" className="head-icon">
+                        <button className="head-icon" onClick={logoutOnClick}>
                             <IoMdLogOut size={24} />
-                        </Link>
+                        </button>
                     </NavIcon>
                 </Navbar>
             </div>
