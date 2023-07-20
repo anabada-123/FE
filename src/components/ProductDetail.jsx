@@ -15,6 +15,9 @@ const ImgBox = styled.div`
     @media screen and (max-width: 768px) {
         width: 100%;
     }
+    @media screen and (max-width: 500px) {
+        height: 530px;
+    }
 `;
 
 const ProductThumbnail = styled.div`
@@ -25,6 +28,9 @@ const ProductThumbnail = styled.div`
         height: 100%;
         object-fit: cover;
         object-position: center;
+    }
+    @media screen and (max-width: 500px) {
+        height: 400px;
     }
 `;
 const ProductImgs = styled.div`
