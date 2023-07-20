@@ -9,6 +9,11 @@ const ProductRegPageSt = styled.div`
     border-radius: 20px;
     box-shadow: 0 5px 0 #333;
     overflow: hidden;
+    @media screen and (max-width: 500px) {
+        border-left: none;
+        border-right: none;
+        border-radius: 0 0 20px 20px;
+    }
 `;
 const ProductDetailPage = () => {
     return (

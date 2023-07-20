@@ -6,12 +6,15 @@ import { MONO_COLOR } from '../assets/colors';
 import { useNavigate } from 'react-router-dom';
 
 const ImgBox = styled.div`
-    width: 445px;
+    width: 40%;
     height: 590px;
     border-radius: 25px;
     overflow: hidden;
     border: 2px solid #333;
     border-bottom: 5px solid #333;
+    @media screen and (max-width: 768px) {
+        width: 100%;
+    }
 `;
 
 const ProductThumbnail = styled.div`
@@ -168,7 +171,7 @@ const ProductDetail = ({ data, btnDeleteEvent }) => {
             <>
                 {data && (
                     <>
-                        <ProductInfo name="product_reg_form" encType="multipart/form-data">
+                        <ProductInfo>
                             <ImgBox>
                                 <ProductThumbnail>
                                     <img src={mainImg} alt={'main_img'} />
