@@ -120,6 +120,7 @@ const NavIcon = styled.nav`
         padding: 5px;
         border-radius: 10px;
         border: 2px solid #333;
+        box-sizing: border-box;
         cursor: pointer;
         &:hover {
             filter: brightness(0.8);
@@ -142,7 +143,7 @@ const NavIcon = styled.nav`
 
 const Header = () => {
     const logoutOnClick = () => {
-        localStorage.removeItem('token');
+        localStorage.removeItem('accessToken');
         window.location.reload();
     };
     return (
