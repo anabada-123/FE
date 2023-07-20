@@ -108,6 +108,12 @@ const ProductInfo = styled.div`
         }
         .btn-box {
             display: flex;
+            @media screen and (max-width: 768px) {
+                flex-direction: column;
+                align-items: center;
+                margin-top: 16px;
+                gap: 16px 0;
+            }
         }
     }
     .sub {

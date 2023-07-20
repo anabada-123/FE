@@ -9,7 +9,7 @@ import { GiCube } from 'react-icons/gi';
 import { BLUE_COLOR, blueColor, PINK_COLOR } from '../assets/colors';
 import Input from '../components/common/Input';
 import Button from '../components/common/Button/Button';
-
+import { ReactComponent as AnabadaLogo } from '../assets/img/anabada-logo.svg';
 const HeaderSt = styled.header`
     width: 100%;
     background-color: #efefef;
@@ -47,9 +47,15 @@ const HeaderSt = styled.header`
                     width: 25px;
                     height: 25px;
                     margin-right: 4px;
-                    fill: ${PINK_COLOR[2]};
                 }
             }
+        }
+    }
+    .logo-box {
+        display: flex;
+        align-items: flex-end;
+        svg {
+            height: 80px;
         }
     }
     form {
@@ -89,7 +95,7 @@ const Logo = styled.div`
         width: 100%;
         font-size: 1rem;
         margin-left: 0;
-        padding: 10px 0;
+        /* padding: 10px 0; */
         text-align: center;
         color: ${PINK_COLOR[2]};
         /* justify-content: space-between; */
@@ -139,8 +145,8 @@ const Header = () => {
         <HeaderSt>
             <div className="logo">
                 <div className="center">
-                    <Link to="/">
-                        <GiCube size={50} fill={'#fff'} />
+                    <Link to="/" className="logo-box">
+                        <AnabadaLogo />
                         <Logo>
                             <h1>Anabada</h1>
                         </Logo>

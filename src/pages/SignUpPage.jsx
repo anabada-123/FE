@@ -3,7 +3,9 @@ import styled from 'styled-components';
 import Input from '../components/common/Input';
 import Button from '../components/common/Button/Button';
 import useInput from '../hooks/useInput';
-import Modal from '../components/common/Modal';
+import Modal, { IntentCheckModel } from '../components/common/Modal';
+
+import { useNavigate } from 'react-router-dom';
 import { YELLOW_COLOR, PINK_COLOR, BLUE_COLOR, MONO_COLOR } from '../assets/colors';
 import { useMutation, useQueryClient } from 'react-query';
 import {
@@ -158,13 +160,23 @@ const BackGroundFixed = styled.div`
     background-color: ${YELLOW_COLOR[1]};
 `;
 const SignUpPage = () => {
+    const nav = useNavigate();
+
     const [isOpen, setIsOpen] = useState(false);
+    const [isOpenIntentCheck, setIsOpenIntentCheck] = useState(false);
     const [massage, setMassage] = useState('');
     const openModal = () => {
         setIsOpen(true);
     };
     const handleClose = () => {
         setIsOpen(false);
+    };
+    const openModalIntentCheck = () => {
+        setIsOpenIntentCheck(true);
+    };
+    const handleIntentCheck = () => {
+        setIsOpenIntentCheck(false);
+        nav('/login');
     };
 
     const [nickName, setNickName, onChangeNickNameHandler] = useInput('');
@@ -174,16 +186,22 @@ const SignUpPage = () => {
             if (data.msg) {
                 setMassage(data.msg);
                 setNicknameCheck(true);
+                openModalIntentCheck();
             }
             if (data.errorMsg) {
                 setMassage(data.errorMsg);
                 setNicknameCheck(false);
+                openModal();
             }
-            openModal();
         },
     });
     const onClickNickNameCheckHandler = async (e) => {
         e.preventDefault();
+        if (!nickName) {
+            setMassage('닉네임을 입력해주세요.');
+            openModal();
+            return;
+        }
         const nickname = {
             nickname: nickName,
         };
@@ -207,6 +225,11 @@ const SignUpPage = () => {
     });
     const onClickIDCheckHandler = async (e) => {
         e.preventDefault();
+        if (!userId) {
+            setMassage('아이디를 입력해주세요');
+            openModal();
+            return;
+        }
         await idCheckMutation.mutateAsync(userId);
     };
 
@@ -229,6 +252,11 @@ const SignUpPage = () => {
     });
     const onClickEmailCodeHandler = async (e) => {
         e.preventDefault();
+        if (!email) {
+            setMassage('이메일 주소를 입력해주세요');
+            openModal();
+            return;
+        }
         await emailCheckMutation.mutateAsync(email);
     };
 
@@ -252,11 +280,11 @@ const SignUpPage = () => {
     );
     const onChangeEmailAuthCodeCheckHandler = async (e) => {
         e.preventDefault();
-        // if (MailAuthCheck) {
-        //     setMassage('인증 코드 확인을 완료한 이메일입니다.');
-        //     openModal();
-        //     return;
-        // }
+        if (!emailAuthCode) {
+            setMassage('이메일 인증코드를 입력해주세요');
+            openModal();
+            return;
+        }
         const emailAuthData = {
             email: email,
             successKey: emailAuthCode,
@@ -307,6 +335,7 @@ const SignUpPage = () => {
         };
 
         await signupMutation.mutateAsync(userLoginInfo);
+        nav('/login');
     };
 
     return (
@@ -444,6 +473,12 @@ const SignUpPage = () => {
                 <Modal isOpen={isOpen} handleClose={handleClose}>
                     {massage && massage}
                 </Modal>
+                <IntentCheckModel
+                    isOpenIntentCheck={isOpenIntentCheck}
+                    onClickEvent={handleIntentCheck}
+                >
+                    {massage && massage}
+                </IntentCheckModel>
             </BackGroundFixed>
         </>
     );

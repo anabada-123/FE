@@ -10,7 +10,6 @@ import { BsCardImage } from 'react-icons/bs';
 import Input, { InputFile } from '../components/common/Input';
 import Textarea from '../components/common/Textarea';
 import Button from './common/Button/Button';
-import { IntentCheckModel } from '../components/common/Modal';
 
 const ProductSubmitForm = ({
     ProductRegSubmitHandler,
@@ -138,12 +137,12 @@ const ProductSubmitForm = ({
                     />
                 </div>
                 <div className="btn-box">
-                    <Button.Secondary onClick={() => nav('/')} $width={'100px'} $center={'center'}>
+                    <Button.Primary onClick={() => nav('/')} $width={'100px'} $center={'center'}>
                         취소하기
-                    </Button.Secondary>
-                    <Button.Primary $width={'100px'} $center={'center'}>
-                        상품 등록하기
                     </Button.Primary>
+                    <Button.Secondary $width={'100px'} $center={'center'}>
+                        상품 등록하기
+                    </Button.Secondary>
                 </div>
             </ProductForm>
         </>

@@ -53,10 +53,10 @@ const ToggleButton = ({ toggle, onClickHandler, $width }) => {
     return (
         <ToggleBox $width={$width}>
             <button className={toggle ? `active` : ``} onClick={onClickHandler}>
-                판매중
+                교환전
             </button>
             <button className={!toggle ? `active` : ``} onClick={onClickHandler}>
-                판매완료
+                교환완료
             </button>
         </ToggleBox>
     );

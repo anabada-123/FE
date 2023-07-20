@@ -33,6 +33,9 @@ const FooterSt = styled.footer`
                 word-wrap: break-word;
                 white-space: pre-wrap;
                 text-overflow: ellipsis;
+                .font-bold {
+                    font-weight: 900;
+                }
             }
         }
         @media screen and (max-width: 768px) {
@@ -53,17 +56,19 @@ const ProjectOutline = styled.div`
     pre {
         padding: 12px 0;
         line-height: 1.7;
-        font-weight: bold;
+        font-weight: 500;
     }
 `;
 const DevelopedPageList = styled.div`
     p {
         margin-bottom: 15px;
     }
+    ul {
+        padding: 1px 0;
+    }
     li {
         padding: 12px 16px;
         font-size: 1rem;
-
         margin-top: 20px;
         border: 2px solid #000;
         background-color: ${BLUE_COLOR.green};
@@ -76,6 +81,7 @@ const DevelopedPageList = styled.div`
         color: #000;
         transform: translateY(-5px);
         transition: all 0.2s ease-in-out;
+        text-align: start;
         cursor: pointer;
 
         svg {
@@ -104,7 +110,7 @@ const ProjectGithub = styled.div`
     pre {
         padding: 12px 0;
         line-height: 1.7;
-        font-weight: bold;
+        font-weight: 500;
         margin-bottom: 15px;
     }
 `;
@@ -150,8 +156,11 @@ const Footer = () => {
                 <ProjectOutline>
                     <p>Introduce Project</p>
                     <pre>
-                        주특기 주차 미니 프로젝트 주특기 주차 <br />
-                        미니 프로젝트 주특기 주차 미니 프로젝트 주특기 주차 미니 프로젝트
+                        <span className="font-bold">아껴 쓰고 나눠쓰고 다시 쓰고 바꿔쓰자</span>{' '}
+                        <br />
+                        여러분의 물건이 새로운 주인을 만나 다시 태어날 수 있도록 최선을 다합니다.
+                        환경을 생각하고 소중한 자원을 아껴가며, 불필요한 소비를 줄여가는 동시에
+                        서로의 이웃과 소통하는 소중한 공간이 되어 드리고자 합니다.
                     </pre>
                 </ProjectOutline>
                 <DevelopedPageList>
@@ -198,8 +207,9 @@ const Footer = () => {
                 <ProjectGithub>
                     <p>more view Project</p>
                     <pre>
-                        주특기 주차 미니 프로젝트 주특기 주차 <br />
-                        미니 프로젝트 주특기 주차 미니 프로젝트 주특기 주차 미니 프로젝트
+                        해당 프로젝트는 github 오픈소스로 공개되어 있습니다. 프로젝트 github에
+                        방문하신다면 리뷰를 남겨주세요. 남겨주신 리뷰는 저희에게 큰 힘과 성장의
+                        밑거름이 될 수 있습니다.
                     </pre>
                     <div className="link-box">
                         <GoGithubLink href="https://github.com/anabada-123/FE">

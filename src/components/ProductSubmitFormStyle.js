@@ -3,7 +3,7 @@ import { BLUE_COLOR, YELLOW_COLOR } from '../assets/colors';
 
 export const ProductForm = styled.form`
     width: 100%;
-    padding: 50px;
+    padding: 50px 50px 90px;
     /* background-color: antiquewhite; */
     display: flex;
     flex-wrap: wrap;
@@ -23,6 +23,7 @@ export const ProductForm = styled.form`
     }
     .btn-box {
         display: flex;
+        justify-content: center;
         margin-top: 50px;
     }
     @media screen and (max-width: 1100px) {
@@ -36,6 +37,7 @@ export const ProductForm = styled.form`
         padding: 20px 20px;
         .btn-box {
             flex-direction: column;
+            align-items: center;
         }
     }
 `;

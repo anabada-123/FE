@@ -8,6 +8,9 @@ const GlobalStyle = createGlobalStyle`
         font-weight: normal;
         font-style: normal;
     }
+
+     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;500;900&display=swap');
+
     ${reset} //styled-reset 설치, 추가
     * {
         box-sizing: border-box;
@@ -17,7 +20,7 @@ const GlobalStyle = createGlobalStyle`
         color: inherit;
     }
     body {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
         'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
         sans-serif;
     }
@@ -27,7 +30,7 @@ const GlobalStyle = createGlobalStyle`
     input:focus, textarea:focus {outline: none;}
     textarea{
         resize: none;
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
         'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
         sans-serif;
     }

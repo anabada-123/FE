@@ -19,9 +19,11 @@ const getTradingItems = async (currentPage) => {
 const deleteTradingItems = async (id) => {
     try {
         await axios.delete(`${process.env.REACT_APP_SERVER_URL}/items/${id}`);
-        alert('상품 삭제 성공했습니다.');
+        const msg = '물품이 삭제되었습니다.';
+        return msg;
     } catch (error) {
-        alert('상품 삭제 실패했습니다.');
+        const msg = '물품 삭제 실패했습니다.';
+        return msg;
     }
 };
 
@@ -33,9 +35,13 @@ const addTradingItems = async (formData) => {
             },
         };
         await axios.post(`${process.env.REACT_APP_SERVER_URL}/items`, formData, config);
-        alert('상품등록에 성공했습니다');
+        const msg = '상품등록을 성공했습니다';
+        return msg;
+        // alert('상품등록에 성공했습니다');
     } catch (error) {
-        alert('상품등록에 실패했습니다.');
+        const msg = '상품등록을 실패했습니다';
+        return msg;
+        // alert('상품등록에 실패했습니다.');
     }
 };
 

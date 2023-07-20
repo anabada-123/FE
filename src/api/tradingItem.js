@@ -19,9 +19,11 @@ const updateTradingItem = async (id, formData) => {
             },
         };
         await axios.put(`${process.env.REACT_APP_SERVER_URL}/items/${id}`, formData, config);
-        alert('상품등록에 성공했습니다');
+        const msg = '상품등록을 수정했습니다';
+        return msg;
     } catch (error) {
-        alert('상품등록에 실패했습니다.');
+        const msg = '상품등록 수정을 실패했습니다';
+        return msg;
     }
 };
 

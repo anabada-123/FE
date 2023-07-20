@@ -5,11 +5,28 @@ import { addTradingItems } from '../api/tradingItems';
 import { useNavigate } from 'react-router-dom';
 import ProductSubmitForm from '../components/ProductSubmitForm';
 import useImageHandler from '../hooks/useImageHandler';
-
+import Modal, { IntentCheckModel } from '../components/common/Modal';
 // [ ]스타일과 기능 분리 필요
 // [ ]재사용 컴포넌트 분리 필요
 
 const ProductCreateContainer = () => {
+    const [isOpen, setIsOpen] = useState(false);
+    const [isOpenIntentCheck, setIsOpenIntentCheck] = useState(false);
+    const [massage, setMassage] = useState('');
+    const openModal = () => {
+        setIsOpen(true);
+    };
+    const handleClose = () => {
+        setIsOpen(false);
+    };
+    const openModalIntentCheck = () => {
+        setIsOpenIntentCheck(true);
+    };
+    const handleIntentCheck = () => {
+        setIsOpenIntentCheck(false);
+        nav('/');
+    };
+
     //텍스트
     const [title, setTitle, onChangeTitle] = useInput();
     const [productOneDesc, setProductOneDesc, onChangeProductOneDesc] = useInput();
@@ -104,7 +121,15 @@ const ProductCreateContainer = () => {
     const queryClient = useQueryClient();
 
     const mutation = useMutation(addTradingItems, {
-        onSuccess: () => {
+        onSuccess: (msg) => {
+            if (msg === '상품등록에 성공했습니다') {
+                setMassage(msg);
+                openModalIntentCheck();
+            }
+            if (msg === '상품등록에 실패했습니다') {
+                setMassage(msg);
+                openModal();
+            }
             queryClient.invalidateQueries('tradingItem');
         },
     });
@@ -139,7 +164,9 @@ const ProductCreateContainer = () => {
         }
 
         if (emptyFields.length > 0) {
-            return alert(emptyFields.join(', ') + '을(를) 입력해주세요');
+            setMassage(emptyFields.join(', ') + '을(를) 입력해주세요');
+            openModal();
+            return;
         }
 
         const items = {
@@ -171,14 +198,6 @@ const ProductCreateContainer = () => {
         // }
 
         await mutation.mutateAsync(formData);
-
-        nav('/');
-        setTitle('');
-        setProductOneDesc('');
-        setProductDesc('');
-        setTradeItem('');
-        setTradeItem('');
-        setLocation('');
     };
     return (
         <>
@@ -204,6 +223,15 @@ const ProductCreateContainer = () => {
                 onChangeProductDesc={onChangeProductDesc}
                 nav={nav}
             />
+            <Modal isOpen={isOpen} handleClose={handleClose}>
+                {massage && massage}
+            </Modal>
+            <IntentCheckModel
+                isOpenIntentCheck={isOpenIntentCheck}
+                onClickEvent={handleIntentCheck}
+            >
+                {massage && massage}
+            </IntentCheckModel>
         </>
     );
 };

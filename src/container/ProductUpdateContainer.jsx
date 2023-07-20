@@ -20,8 +20,26 @@ import { useParams } from 'react-router-dom';
 // import { updateItem } from '../redux/modules/itemSlice';
 import { useNavigate } from 'react-router-dom';
 import { BsCardImage } from 'react-icons/bs';
+import Modal, { IntentCheckModel } from '../components/common/Modal';
 
 const ProductUpdateContainer = () => {
+    const [isOpen, setIsOpen] = useState(false);
+    const [isOpenIntentCheck, setIsOpenIntentCheck] = useState(false);
+    const [massage, setMassage] = useState('');
+    const openModal = () => {
+        setIsOpen(true);
+    };
+    const handleClose = () => {
+        setIsOpen(false);
+    };
+    const openModalIntentCheck = () => {
+        setIsOpenIntentCheck(true);
+    };
+    const handleIntentCheck = () => {
+        setIsOpenIntentCheck(false);
+        nav('/');
+    };
+
     const [title, setTitle, onChangeTitle] = useInput();
     const [productOneDesc, setProductOneDesc, onChangeProductOneDesc] = useInput();
     const [productDesc, setProductDesc, onChangeProductDesc] = useInput();
@@ -140,7 +158,15 @@ const ProductUpdateContainer = () => {
     // 트레이드 아이템 등록
     const queryClient = useQueryClient();
     const mutation = useMutation((formData) => updateTradingItem(id, formData), {
-        onSuccess: () => {
+        onSuccess: (msg) => {
+            if (msg === '상품등록을 수정했습니다') {
+                setMassage(msg);
+                openModalIntentCheck();
+            }
+            if (msg === '상품등록 수정을 실패했습니다') {
+                setMassage(msg);
+                openModal();
+            }
             queryClient.invalidateQueries('tradingItem');
         },
     });
@@ -189,13 +215,6 @@ const ProductUpdateContainer = () => {
         // for (let value of formData.values()) {
         //     console.log(value);
         // }
-        setTitle('');
-        setProductOneDesc('');
-        setProductDesc('');
-        setTradeItem('');
-        setTradeItem('');
-        setLocation('');
-        nav(-1);
     };
 
     const onClickIsSale = (e) => {
@@ -204,119 +223,130 @@ const ProductUpdateContainer = () => {
     };
     // console.log(multipleImgName);
     return (
-        <ProductForm
-            onSubmit={ProductRegSubmitHandler}
-            name="product_reg_form"
-            encType="multipart/form-data"
-        >
-            <ImgBox>
-                <ProductThumbnail>
-                    <span className="preview-img-title">대표이미지</span>
-                    {image ? (
-                        <img src={image} alt="thumbnail_image" />
-                    ) : (
-                        <NoneImg>
-                            <BsCardImage size={50} color={'#777'} />
-                            <p>미리보기 이미지가 없습니다</p>
-                        </NoneImg>
-                    )}
-                </ProductThumbnail>
-                <ProductImgs>
-                    {multipleImage ? (
-                        multipleImage.map((img, idx) => {
-                            return (
-                                <img
-                                    key={idx}
-                                    src={img}
-                                    alt={`images-${idx}`}
-                                    onClick={() => onClickImageHandler(img, idx)}
-                                />
-                            );
-                        })
-                    ) : (
-                        <NoneImg className="multiple">
-                            <BsCardImage size={30} color={'#777'} />
-                            {/* <p>미리보기 이미지가 없습니다</p> */}
-                        </NoneImg>
-                    )}
-                </ProductImgs>
-            </ImgBox>
-            <div className="core">
-                <ToggleButton toggle={isSale} onClickHandler={onClickIsSale} />
-                <InputFile
-                    label={'이미지'}
-                    accept="image/*"
-                    $idName={'info-imgs'}
-                    $value={multipleImgName.join(',')}
-                    onChange={MultipleImageHander}
-                    $coreValue={multipleImgName ? false : true}
-                    multiple
-                />
-                <InputFile
-                    label={'대표이미지'}
-                    accept="image/*"
-                    // $idName={'info-img'}
-                    $value={imgName}
-                    $functionActive={'none-active'}
-                    // onChange={ImageChangehandler}
-                />
-                <Textarea
-                    label={'제목'}
-                    type={'text'}
-                    value={title}
-                    onChange={onChangeTitle}
-                    placeholder="제목을 입력해주세요"
-                    $coreValue={title ? false : true}
-                />
-                <Textarea
-                    label={'상품 한 줄 설명'}
-                    type={'text'}
-                    value={productOneDesc}
-                    onChange={onChangeProductOneDesc}
-                    placeholder="교환 물품에 대한 한 줄 설명을 해주세요"
-                    $coreValue={productOneDesc ? false : true}
-                />
-                <Textarea
-                    label={'어떤 물품이랑 교환하실 건가요?'}
-                    type={'text'}
-                    value={tradeItem}
-                    onChange={onChangeTradeItem}
-                    placeholder="어떤 물품이랑 교환하실 건가요?"
-                    $coreValue={tradeItem ? false : true}
-                />
-                <Textarea
-                    label={'어디서 교환하실 건가요'}
-                    type={'text'}
-                    value={location}
-                    onChange={onChangeLocation}
-                    placeholder="어디서 교환하실 건가요"
-                    $coreValue={location ? false : true}
-                />
-            </div>
-            <div className="sub">
-                <Textarea
-                    label={'상세한 내용을 적어주세요'}
-                    type={'text'}
-                    value={productDesc}
-                    onChange={onChangeProductDesc}
-                    $heigth={'600px'}
-                    $padding={'50px'}
-                    placeholder="상세한 내용을 적어주세요"
-                    $coreValue={productDesc ? false : true}
-                    $center
-                />
-            </div>
-            <div className="btn-box">
-                <Button.Primary
-                    onClick={() => {
-                        nav(-1);
-                    }}
-                >
-                    수정 취소하기
-                </Button.Primary>
-                <Button.Secondary>상품 수정하기</Button.Secondary>
-            </div>
-        </ProductForm>
+        <>
+            <ProductForm
+                onSubmit={ProductRegSubmitHandler}
+                name="product_reg_form"
+                encType="multipart/form-data"
+            >
+                <ImgBox>
+                    <ProductThumbnail>
+                        <span className="preview-img-title">대표이미지</span>
+                        {image ? (
+                            <img src={image} alt="thumbnail_image" />
+                        ) : (
+                            <NoneImg>
+                                <BsCardImage size={50} color={'#777'} />
+                                <p>미리보기 이미지가 없습니다</p>
+                            </NoneImg>
+                        )}
+                    </ProductThumbnail>
+                    <ProductImgs>
+                        {multipleImage ? (
+                            multipleImage.map((img, idx) => {
+                                return (
+                                    <img
+                                        key={idx}
+                                        src={img}
+                                        alt={`images-${idx}`}
+                                        onClick={() => onClickImageHandler(img, idx)}
+                                    />
+                                );
+                            })
+                        ) : (
+                            <NoneImg className="multiple">
+                                <BsCardImage size={30} color={'#777'} />
+                                {/* <p>미리보기 이미지가 없습니다</p> */}
+                            </NoneImg>
+                        )}
+                    </ProductImgs>
+                </ImgBox>
+                <div className="core">
+                    <ToggleButton toggle={isSale} onClickHandler={onClickIsSale} />
+                    <InputFile
+                        label={'이미지'}
+                        accept="image/*"
+                        $idName={'info-imgs'}
+                        $value={multipleImgName.join(',')}
+                        onChange={MultipleImageHander}
+                        $coreValue={multipleImgName ? false : true}
+                        multiple
+                    />
+                    <InputFile
+                        label={'대표이미지'}
+                        accept="image/*"
+                        // $idName={'info-img'}
+                        $value={imgName}
+                        $functionActive={'none-active'}
+                        // onChange={ImageChangehandler}
+                    />
+                    <Textarea
+                        label={'제목'}
+                        type={'text'}
+                        value={title}
+                        onChange={onChangeTitle}
+                        placeholder="제목을 입력해주세요"
+                        $coreValue={title ? false : true}
+                    />
+                    <Textarea
+                        label={'상품 한 줄 설명'}
+                        type={'text'}
+                        value={productOneDesc}
+                        onChange={onChangeProductOneDesc}
+                        placeholder="교환 물품에 대한 한 줄 설명을 해주세요"
+                        $coreValue={productOneDesc ? false : true}
+                    />
+                    <Textarea
+                        label={'어떤 물품이랑 교환하실 건가요?'}
+                        type={'text'}
+                        value={tradeItem}
+                        onChange={onChangeTradeItem}
+                        placeholder="어떤 물품이랑 교환하실 건가요?"
+                        $coreValue={tradeItem ? false : true}
+                    />
+                    <Textarea
+                        label={'어디서 교환하실 건가요'}
+                        type={'text'}
+                        value={location}
+                        onChange={onChangeLocation}
+                        placeholder="어디서 교환하실 건가요"
+                        $coreValue={location ? false : true}
+                    />
+                </div>
+                <div className="sub">
+                    <Textarea
+                        label={'상세한 내용을 적어주세요'}
+                        type={'text'}
+                        value={productDesc}
+                        onChange={onChangeProductDesc}
+                        $heigth={'600px'}
+                        $padding={'50px'}
+                        placeholder="상세한 내용을 적어주세요"
+                        $coreValue={productDesc ? false : true}
+                        $center
+                    />
+                </div>
+                <div className="btn-box">
+                    <Button.Primary
+                        onClick={() => {
+                            nav(-1);
+                        }}
+                    >
+                        수정 취소하기
+                    </Button.Primary>
+                    <Button.Secondary>상품 수정하기</Button.Secondary>
+                </div>
+            </ProductForm>
+            <Modal isOpen={isOpen} handleClose={handleClose}>
+                {massage && massage}
+            </Modal>
+            <IntentCheckModel
+                isOpenIntentCheck={isOpenIntentCheck}
+                onClickEvent={handleIntentCheck}
+            >
+                {massage && massage}
+            </IntentCheckModel>
+        </>
     );
 };
 

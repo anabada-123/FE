@@ -7,25 +7,45 @@ import { getTradingItem } from '../api/tradingItem';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import { updateItem } from '../redux/modules/itemSlice';
+import Modal, { IntentCheckModel } from '../components/common/Modal';
 
 const ProductDetailContainer = () => {
+    const [isOpen, setIsOpen] = useState(false);
+    const [isOpenIntentCheck, setIsOpenIntentCheck] = useState(false);
+    const [massage, setMassage] = useState('');
+    const openModal = () => {
+        setIsOpen(true);
+    };
+    const handleClose = () => {
+        setIsOpen(false);
+    };
+    const openModalIntentCheck = () => {
+        setIsOpenIntentCheck(true);
+    };
+    const handleIntentCheck = () => {
+        setIsOpenIntentCheck(false);
+        nav('/');
+    };
     const { id } = useParams();
     const nav = useNavigate();
     const dispatch = useDispatch();
     const queryClient = useQueryClient();
     const mutation = useMutation((id) => deleteTradingItems(id), {
-        onSuccess: () => {
+        onSuccess: (msg) => {
+            if (msg === '물품이 삭제되었습니다.') {
+                setMassage(msg);
+                openModalIntentCheck();
+            }
+            if (msg === '물품 삭제 실패했습니다.') {
+                setMassage(msg);
+                openModal();
+            }
             queryClient.invalidateQueries('tradingItem');
         },
     });
 
     const { data } = useQuery('tradingItem', () => getTradingItem(id), {
-        onSuccess: (data) => {
-            // onSuccess 콜백 함수의 내용을 여기에 추가하세요
-            // dispatch(updateItem(data));
-            // console.log(data.img);
-            // console.log(data.imgList);
-        },
+        onSuccess: (data) => {},
     });
 
     const onClickDelete = async (id) => {
@@ -33,7 +53,24 @@ const ProductDetailContainer = () => {
         nav('/');
     };
 
-    return <>{data && <ProductDetail data={data} btnDeleteEvent={onClickDelete} />}</>;
+    return (
+        <>
+            {data && (
+                <>
+                    <ProductDetail data={data} btnDeleteEvent={onClickDelete} />
+                    <Modal isOpen={isOpen} handleClose={handleClose}>
+                        {massage && massage}
+                    </Modal>
+                    <IntentCheckModel
+                        isOpenIntentCheck={isOpenIntentCheck}
+                        onClickEvent={handleIntentCheck}
+                    >
+                        {massage && massage}
+                    </IntentCheckModel>
+                </>
+            )}
+        </>
+    );
 };
 
 export default ProductDetailContainer;

@@ -31,7 +31,6 @@ const ModalStyle = styled.div`
     align-items: center;
     padding: 20px 20px 50px;
     z-index: 20;
-
     .modal-content {
         font-size: 1.3rem;
     }
@@ -42,6 +41,11 @@ const ModalStyle = styled.div`
         justify-content: center;
         align-items: center;
     }
+    @media screen and (max-width: 500px) {
+        width: 80%;
+        height: 320px;
+        /* height: 100%; */
+    }
 `;
 
 const ModalTitle = styled.p`
@@ -51,6 +55,7 @@ const ModalTitle = styled.p`
     margin-bottom: 10px;
     text-align: center;
     text-transform: uppercase;
+    line-height: 1.8;
     color: #333;
 `;
 
@@ -72,17 +77,17 @@ const Modal = ({ children, isOpen, handleClose, subText }) => {
     );
 };
 
-export const IntentCheckModel = ({ children, isOpen, handleClose, subText, onClickEvent }) => {
+export const IntentCheckModel = ({ children, isOpenIntentCheck, subText, onClickEvent }) => {
     return (
         <>
-            {isOpen && (
+            {isOpenIntentCheck && (
                 <ModalBack>
                     <ModalStyle>
                         <div className="modal-text-box">
                             <ModalTitle>{children}</ModalTitle>
                             {subText && <p className="modal-content">{subText}</p>}
                         </div>
-                        <Button.Primary onClick={handleClose}>취소</Button.Primary>
+                        {/* <Button.Primary onClick={handleClose}>취소</Button.Primary> */}
                         <Button.Secondary onClick={onClickEvent}>확인</Button.Secondary>
                     </ModalStyle>
                 </ModalBack>

@@ -31,13 +31,12 @@ const MainpageContainer = () => {
             return;
         }
         await setCurrentPage(page);
-        console.log(page);
         refetch();
     };
 
     return (
         <>
-            {data ? <ProductList data={responseData} /> : null}
+            {responseData ? <ProductList data={responseData} /> : null}
             <PaginationButton
                 currentPage={currentPage}
                 totalPages={totalPages}
